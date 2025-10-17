@@ -3,35 +3,106 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CampusSpace</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>CampusSpace Login</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* --- LOGIN PAGE STYLING --- */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .login-card {
+      background-color: #fff;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .login-card h1 {
+      margin-bottom: 10px;
+      color: #b31b1b;
+    }
+
+    .login-card p {
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .login-card label {
+      display: block;
+      text-align: left;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .login-card input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .login-card button {
+      width: 100%;
+      padding: 12px;
+      background-color: #b31b1b;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .login-card button:hover {
+      background-color: #ff2c2c;
+    }
+  </style>
 </head>
+
 <body>
-  <header>
-    <h1>CampusSpace</h1>
-    <p>Find free classrooms & working outlets around campus.</p>
-  </header>
+  <div class="login-container">
+    <div class="login-card">
+      <h1>CampusSpace</h1>
+      <p>Login with your NJIT ID to get started</p>
+      <form id="loginForm">
+        <label for="njitId">NJIT ID</label>
+        <input type="text" id="njitId" placeholder="Enter your NJIT ID" required>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
 
-  <main>
-    <section class="room-status">
-      <h2>Room Availability</h2>
-      <div class="room-card">Cullimore 204 — <span class="status free">Free</span></div>
-      <div class="room-card">Kupfrian 110 — <span class="status busy">In Use</span></div>
-      <div class="room-card">Tiernan 101 — <span class="status free">Free</span></div>
-    </section>
-
-    <section class="outlet-status">
-      <h2>Outlet Status</h2>
-      <div class="outlet-card">Outlet #1 — <span class="status good">Available</span></div>
-      <div class="outlet-card">Outlet #2 — <span class="status broken">Broken</span></div>
-      <div class="outlet-card">Outlet #3 — <span class="status taken">In Use</span></div>
-    </section>
-  </main>
-
-  <footer>
-    <p>© 2025 CampusSpace | Built for students, by students</p>
-  </footer>
-  
-  <script src="script.js"></script>
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const njitId = document.getElementById('njitId').value.trim();
+      if(njitId) {
+        localStorage.setItem('njitId', njitId);
+        window.location.href = 'dashboard.html';
+      }
+    });
+  </script>
 </body>
 </html>

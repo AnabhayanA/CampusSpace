@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusSpace Dashboard</title>
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      color: #222;
+    }
+
+    header {
+      background-color: #b31b1b;
+      color: #fff;
+      text-align: center;
+      padding: 20px 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    main.dashboard { text-align: center; margin-top: 30px; }
+    .choice-buttons { margin-top: 20px; }
+    .btn {
+      background-color: #b31b1b;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    .btn:hover { background-color: #ff2c2c; transform: scale(1.05); }
+
+    section {
+      max-width: 850px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .room-card { padding: 12px; border-bottom: 1px solid #ddd; font-size: 1rem; }
+    .room-card:last-child { border-bottom: none; }
+    .status.free { color: #00b300; font-weight: bold; }
+    .status.busy { color: #ffcc00; font-weight: bold; }
+    .status.broken { color: #ff0000; font-weight: bold; }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #b31b1b;
+      color: white;
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
+
+    #map { height: 500px; border-radius: 10px; margin-top: 15px; }
+    #building-info { margin-top: 20px; font-weight: bold; text-align: center; color: #b31b1b; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>CampusSpace Dashboard</h1>
+    <p id="welcomeText"></p>
+  </header>
+
+  <main class="dashboard">
+    <h2>What are you looking for?</h2>
+    <div class="choice-buttons">
+      <button class="btn" onclick="showSection('room')">Find Classroom</button>
+      <button class="btn" onclick="showSection('outlet')">Find Outlet</button>
+    </div>
+  </main>
+
+  <!-- CLASSROOM SECTION -->
+  <section id="room-section" style="display:none;">
+    <h2>Available Classrooms</h2>
+    <div class="room-card">CKB 216 — <span class="status free">Free</span></div>
+    <div class="room-card">CKB 227 — <span class="status busy">In Use</span></div>
+    <div class="room-card">Cullimore 204 — <span class="status free">Free</span></div>
+    <div class="room-card">Kupfrian 110 — <span class="status busy">In Use</span></div>
+    <div class="room-card">Tiernan 101 — <span class="status free">Free</span></div>
+  </section>
+
+  <!-- OUTLET SECTION -->
+  <section id="outlet-section" style="display:none;">
+    <h2>Available Outlets</h2>
+    <div class="room-card">Campus Center - 2nd Floor Lounge — <span class="status free">Available</span></div>
+    <div class="room-card">Central King Building - Hallway — <span class="status busy">In Use</span></div>
+    <div class="room-card">GITC Atrium — <span class="status broken">Broken</span></div>
+    <div class="room-card">Library - Study Zone — <span class="status free">Available</span></div>
+    <div class="room-card">Campus Center - Game Room — <span class="status busy">In Use</span></div>
+
+    <h3 style="margin-top:30px;">Explore on the Map</h3>
+    <p style="text-align:center; color:gray;">Drag the pin to explore outlet locations</p>
+    <div id="map"></div>
+    <div id="building-info"></div>
+  </section>
+
+  <footer>
+    <p>© 2025 CampusSpace | Built for students, by students</p>
+  </footer>
+
+  <script>
+    // --- LOGIN CHECK ---
+    const njitId = localStorage.getItem("njitId");
+    const welcomeText = document.getElementById("welcomeText");
+    if (!njitId) window.location.href = "index.html";
+    else welcomeText.textContent = `Welcome, ${njitId}!`;
+
+    // --- SECTION SWITCH ---
+    function showSection(type) {
+      document.getElementById("room-section").style.display = "none";
+      document.getElementById("outlet-section").style.display = "none";
+
+      if (type === "room") document.getElementById("room-section").style.display = "block";
+      else {
+        document.getElementById("outlet-section").style.display = "block";
+        requestAnimationFrame(initMap);
+      }
+    }
+
+    // --- MAP ---
+    let mapInitialized = false;
+    let map, marker;
+
+    function initMap() {
+      if (mapInitialized) return;
+      mapInitialized = true;
+
+      const bounds = [[0, 0], [1000, 1500]];
+      map = L.map("map", {
+        crs: L.CRS.Simple,
+        minZoom: -2,
+        maxZoom: 2,
+      });
+
+      L.imageOverlay("assets/njit-map.png", bounds).addTo(map);
+      map.fitBounds(bounds);
+
+      // Draggable marker only
+      marker = L.marker([500, 750], { draggable: true, title: "Move me!" }).addTo(map);
+      marker.bindPopup("You can drag this pin!").openPopup();
+
+      marker.on("dragend", function (e) {
+        const pos = marker.getLatLng();
+        console.log("Marker moved to:", pos);
+      });
+    }
+  </script>
+</body>
+</html>
