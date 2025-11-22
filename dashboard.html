@@ -52,23 +52,19 @@
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     }
 
-    .room-card { padding: 12px; border-bottom: 1px solid #ddd; font-size: 1rem; }
-    .room-card:last-child { border-bottom: none; }
-    .status.free { color: #00b300; font-weight: bold; }
-    .status.busy { color: #ffcc00; font-weight: bold; }
+    .room-card, .outlet-card {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      font-size: 1rem;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    .room-card:last-child, .outlet-card:last-child { border-bottom: none; }
+    .status.free, .status.good { color: #00b300; font-weight: bold; }
+    .status.busy, .status.taken { color: #ffcc00; font-weight: bold; }
     .status.broken { color: #ff0000; font-weight: bold; }
 
-    footer {
-      text-align: center;
-      padding: 15px;
-      background-color: #b31b1b;
-      color: white;
-      font-size: 0.9rem;
-      margin-top: 40px;
-    }
-
     #map { height: 500px; border-radius: 10px; margin-top: 15px; }
-    #building-info { margin-top: 20px; font-weight: bold; text-align: center; color: #b31b1b; }
   </style>
 </head>
 
@@ -99,16 +95,15 @@
   <!-- OUTLET SECTION -->
   <section id="outlet-section" style="display:none;">
     <h2>Available Outlets</h2>
-    <div class="room-card">Campus Center - 2nd Floor Lounge — <span class="status free">Available</span></div>
-    <div class="room-card">Central King Building - Hallway — <span class="status busy">In Use</span></div>
-    <div class="room-card">GITC Atrium — <span class="status broken">Broken</span></div>
-    <div class="room-card">Library - Study Zone — <span class="status free">Available</span></div>
-    <div class="room-card">Campus Center - Game Room — <span class="status busy">In Use</span></div>
+    <div class="outlet-card" data-building="Campus Center">Campus Center - 2nd Floor Lounge — <span class="status free">Available</span></div>
+    <div class="outlet-card" data-building="Central King Building">Central King Building - Hallway — <span class="status busy">In Use</span></div>
+    <div class="outlet-card" data-building="GITC">GITC Atrium — <span class="status broken">Broken</span></div>
+    <div class="outlet-card" data-building="Library">Library - Study Zone — <span class="status free">Available</span></div>
+    <div class="outlet-card" data-building="Campus Center">Campus Center - Game Room — <span class="status busy">In Use</span></div>
 
     <h3 style="margin-top:30px;">Explore on the Map</h3>
     <p style="text-align:center; color:gray;">Drag the pin to explore outlet locations</p>
     <div id="map"></div>
-    <div id="building-info"></div>
   </section>
 
   <footer>
@@ -142,23 +137,38 @@
       if (mapInitialized) return;
       mapInitialized = true;
 
-      const bounds = [[0, 0], [1000, 1500]];
-      map = L.map("map", {
-        crs: L.CRS.Simple,
-        minZoom: -2,
-        maxZoom: 2,
-      });
-
+      const bounds = [[0,0],[1000,1500]];
+      map = L.map("map", { crs:L.CRS.Simple, minZoom:-2, maxZoom:2 });
       L.imageOverlay("assets/njit-map.png", bounds).addTo(map);
       map.fitBounds(bounds);
 
-      // Draggable marker only
-      marker = L.marker([500, 750], { draggable: true, title: "Move me!" }).addTo(map);
-      marker.bindPopup("You can drag this pin!").openPopup();
+      // Draggable pin
+      marker = L.marker([500, 750], { draggable:true, title:"Move me!" }).addTo(map);
+      marker.bindPopup("Drag this pin to explore outlets").openPopup();
+      marker.on("dragend", e => console.log("Pin moved to:", marker.getLatLng()));
 
-      marker.on("dragend", function (e) {
-        const pos = marker.getLatLng();
-        console.log("Marker moved to:", pos);
+      // Clickable buildings
+      const buildings = [
+        { name: "Campus Center", bounds:[[700,1000],[800,1100]] },
+        { name: "Central King Building", bounds:[[400,600],[500,700]] },
+        { name: "GITC", bounds:[[200,800],[300,900]] },
+        { name: "Library", bounds:[[600,300],[700,400]] },
+      ];
+
+      buildings.forEach(b => {
+        const rect = L.rectangle(b.bounds, { color: "#b31b1b", weight: 2, fillOpacity: 0.2 }).addTo(map);
+        rect.on("click", () => highlightOutlets(b.name));
+        rect.on("mouseover", () => rect.setStyle({ fillOpacity: 0.4 }));
+        rect.on("mouseout", () => rect.setStyle({ fillOpacity: 0.2 }));
+      });
+    }
+
+    // Highlight outlets in list when a building is clicked
+    function highlightOutlets(buildingName) {
+      const cards = document.querySelectorAll('#outlet-section .outlet-card');
+      cards.forEach(c => {
+        if(c.dataset.building === buildingName) c.style.backgroundColor = '#b31b1b';
+        else c.style.backgroundColor = '#1a1a1a';
       });
     }
   </script>

@@ -1,14 +1,25 @@
+/* --- GENERAL STYLING --- */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  color: #222;
+}
+
+/* --- HEADER --- */
 header {
   text-align: center;
   background-color: #b31b1b;
   padding: 20px 0;
   color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 header h1 {
   margin-bottom: 5px;
 }
 
+/* --- DASHBOARD MAIN --- */
 main.dashboard {
   text-align: center;
   margin: 30px auto;
@@ -30,21 +41,15 @@ main.dashboard {
   cursor: pointer;
   background-color: #b31b1b;
   color: #fff;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .choice-buttons .btn:hover {
   background-color: #ff2c2c;
+  transform: scale(1.05);
 }
 
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin: 20px 0;
-}
-
+/* --- CARDS --- */
 .room-card, .outlet-card {
   background-color: #1a1a1a;
   padding: 15px 20px;
@@ -52,6 +57,7 @@ main.dashboard {
   color: #fff;
   min-width: 180px;
   text-align: center;
+  margin: 10px auto;
   transition: transform 0.2s, background 0.2s;
 }
 
@@ -60,12 +66,40 @@ main.dashboard {
   background-color: #b31b1b;
 }
 
-.status.free { color: #00ff00; font-weight: bold; }
-.status.busy { color: #ffcc00; font-weight: bold; }
-.status.broken { color: #ff0000; font-weight: bold; }
-.status.good { color: #00ff00; font-weight: bold; }
-.status.taken { color: #ffcc00; font-weight: bold; }
+/* --- STATUS COLORS --- */
+.status.free, .status.good { 
+  color: #00ff00; 
+  font-weight: bold; 
+}
 
+.status.busy, .status.taken { 
+  color: #ffcc00; 
+  font-weight: bold; 
+}
+
+.status.broken { 
+  color: #ff0000; 
+  font-weight: bold; 
+}
+
+/* --- SECTIONS --- */
+section {
+  max-width: 850px;
+  margin: 30px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* --- MAP --- */
+#map {
+  height: 500px;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+/* --- FOOTER --- */
 footer {
   text-align: center;
   padding: 15px 0;
@@ -73,4 +107,10 @@ footer {
   background-color: #000;
   color: #fff;
   border-top: 2px solid #b31b1b;
+}
+
+/* --- HIGHLIGHT EFFECT --- */
+.highlight {
+  background-color: #b31b1b;
+  color: #fff;
 }
