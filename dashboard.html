@@ -1,176 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CampusSpace Dashboard</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CampusSpace Dashboard</title>
 
-  <!-- Leaflet CSS & JS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="style.css" />
+<style>
+/* ----------------- Body & Header ----------------- */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(145deg, #f4f4f4, #eaeaea);
+  margin: 0;
+  color: #222;
+  transition: background 0.3s ease;
+}
 
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      color: #222;
-    }
+header {
+  background: linear-gradient(90deg, #b31b1b, #ff2c2c);
+  color: #fff;
+  text-align: center;
+  padding: 25px 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+header h1 { margin-bottom: 5px; font-size: 2rem; letter-spacing: 1px; }
 
-    header {
-      background-color: #b31b1b;
-      color: #fff;
-      text-align: center;
-      padding: 20px 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
+/* ----------------- Main Buttons ----------------- */
+main.dashboard { text-align: center; margin-top: 30px; }
+.choice-buttons { margin-top: 20px; display: flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+.btn {
+  background: linear-gradient(135deg, #b31b1b, #ff2c2c);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  margin: 10px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+.btn:hover { transform: scale(1.08); box-shadow: 0 8px 20px rgba(0,0,0,0.3); background: linear-gradient(135deg,#ff2c2c,#b31b1b); }
 
-    main.dashboard { text-align: center; margin-top: 30px; }
-    .choice-buttons { margin-top: 20px; }
-    .btn {
-      background-color: #b31b1b;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      margin: 10px;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-    .btn:hover { background-color: #ff2c2c; transform: scale(1.05); }
+/* ----------------- Sections ----------------- */
+section {
+  max-width: 950px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+section:hover { transform: translateY(-5px); }
 
-    section {
-      max-width: 850px;
-      margin: 30px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
+/* ----------------- Map ----------------- */
+#map-room, #map-outlet {
+  height: 500px;
+  border-radius: 15px;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s;
+}
+#map-room:hover, #map-outlet:hover { transform: scale(1.01); }
 
-    .room-card, .outlet-card {
-      padding: 12px;
-      border-bottom: 1px solid #ddd;
-      font-size: 1rem;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-    .room-card:last-child, .outlet-card:last-child { border-bottom: none; }
-    .status.free, .status.good { color: #00b300; font-weight: bold; }
-    .status.busy, .status.taken { color: #ffcc00; font-weight: bold; }
-    .status.broken { color: #ff0000; font-weight: bold; }
+/* ----------------- Dropdown Panel ----------------- */
+.dropdown-panel {
+  position: fixed;
+  bottom: -320px;
+  left: 0;
+  width: 100%;
+  max-height: 320px;
+  background: rgba(26,26,26,0.95);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 -6px 20px rgba(0,0,0,0.5);
+  border-top: 3px solid #ff2c2c;
+  overflow-y: auto;
+  color: white;
+  transition: bottom 0.4s ease;
+  z-index: 999;
+  padding: 25px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+.dropdown-panel.show { bottom: 0; }
+.dropdown-panel h3 { margin-top:0; color: #ffcc00; text-align: center; font-size:1.3rem; letter-spacing:0.5px; }
+.dropdown-panel ul { list-style: none; padding: 0; margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+.dropdown-panel ul li {
+  background: linear-gradient(135deg,#b31b1b,#ff2c2c);
+  padding: 12px 18px;
+  border-radius: 12px;
+  min-width: 130px;
+  text-align: center;
+  font-weight: bold;
+  cursor: default;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+.dropdown-panel ul li:hover { background: linear-gradient(135deg,#ff2c2c,#b31b1b); transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
 
-    #map { height: 500px; border-radius: 10px; margin-top: 15px; }
-  </style>
+/* ----------------- Footer ----------------- */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 40px;
+  background: linear-gradient(90deg,#000,#222);
+  color: #fff;
+  border-top: 2px solid #b31b1b;
+  box-shadow: 0 -3px 10px rgba(0,0,0,0.3);
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <h1>CampusSpace Dashboard</h1>
-    <p id="welcomeText"></p>
-  </header>
+<header>
+  <h1>CampusSpace Dashboard</h1>
+  <p id="welcomeText"></p>
+</header>
 
-  <main class="dashboard">
-    <h2>What are you looking for?</h2>
-    <div class="choice-buttons">
-      <button class="btn" onclick="showSection('room')">Find Classroom</button>
-      <button class="btn" onclick="showSection('outlet')">Find Outlet</button>
-    </div>
-  </main>
+<main class="dashboard">
+  <h2>What are you looking for?</h2>
+  <div class="choice-buttons">
+    <button class="btn" onclick="showSection('room')">Find Classroom</button>
+    <button class="btn" onclick="showSection('outlet')">Find Outlet</button>
+  </div>
+</main>
 
-  <!-- CLASSROOM SECTION -->
-  <section id="room-section" style="display:none;">
-    <h2>Available Classrooms</h2>
-    <div class="room-card">CKB 216 — <span class="status free">Free</span></div>
-    <div class="room-card">CKB 227 — <span class="status busy">In Use</span></div>
-    <div class="room-card">Cullimore 204 — <span class="status free">Free</span></div>
-    <div class="room-card">Kupfrian 110 — <span class="status busy">In Use</span></div>
-    <div class="room-card">Tiernan 101 — <span class="status free">Free</span></div>
-  </section>
+<section id="room-section" style="display:none;">
+  <h3 style="text-align:center;">Classroom Locations</h3>
+  <div id="map-room"></div>
+</section>
 
-  <!-- OUTLET SECTION -->
-  <section id="outlet-section" style="display:none;">
-    <h2>Available Outlets</h2>
-    <div class="outlet-card" data-building="Campus Center">Campus Center - 2nd Floor Lounge — <span class="status free">Available</span></div>
-    <div class="outlet-card" data-building="Central King Building">Central King Building - Hallway — <span class="status busy">In Use</span></div>
-    <div class="outlet-card" data-building="GITC">GITC Atrium — <span class="status broken">Broken</span></div>
-    <div class="outlet-card" data-building="Library">Library - Study Zone — <span class="status free">Available</span></div>
-    <div class="outlet-card" data-building="Campus Center">Campus Center - Game Room — <span class="status busy">In Use</span></div>
+<section id="outlet-section" style="display:none;">
+  <h3 style="text-align:center;">Outlet Locations</h3>
+  <div id="map-outlet"></div>
+</section>
 
-    <h3 style="margin-top:30px;">Explore on the Map</h3>
-    <p style="text-align:center; color:gray;">Drag the pin to explore outlet locations</p>
-    <div id="map"></div>
-  </section>
+<div id="dropdown-panel" class="dropdown-panel">
+  <h3 id="panel-title"></h3>
+  <ul id="panel-list"></ul>
+</div>
 
-  <footer>
-    <p>© 2025 CampusSpace | Built for students, by students</p>
-  </footer>
+<footer>
+  <p>© 2025 CampusSpace | Built for students, by students</p>
+</footer>
 
-  <script>
-    // --- LOGIN CHECK ---
-    const njitId = localStorage.getItem("njitId");
-    const welcomeText = document.getElementById("welcomeText");
-    if (!njitId) window.location.href = "index.html";
-    else welcomeText.textContent = `Welcome, ${njitId}!`;
+<script>
+// --- LOGIN ---
+const njitId = localStorage.getItem("njitId");
+const welcomeText = document.getElementById("welcomeText");
+if (!njitId) window.location.href = "index.html";
+else welcomeText.textContent = `Welcome, ${njitId}!`;
 
-    // --- SECTION SWITCH ---
-    function showSection(type) {
-      document.getElementById("room-section").style.display = "none";
-      document.getElementById("outlet-section").style.display = "none";
+// --- Section switch ---
+function showSection(type){
+  document.getElementById("room-section").style.display = "none";
+  document.getElementById("outlet-section").style.display = "none";
+  closePanel();
 
-      if (type === "room") document.getElementById("room-section").style.display = "block";
-      else {
-        document.getElementById("outlet-section").style.display = "block";
-        requestAnimationFrame(initMap);
-      }
-    }
+  if(type === "room"){
+    document.getElementById("room-section").style.display = "block";
+    if(!window.roomMap) initRoomMap();
+  } else {
+    document.getElementById("outlet-section").style.display = "block";
+    if(!window.outletMap) initOutletMap();
+  }
+}
 
-    // --- MAP ---
-    let mapInitialized = false;
-    let map, marker;
+// Building coordinates
+const buildingCoords = {
+  "Campus Center":[40.74306293183706,-74.1782790746367],
+  "CKB":[40.742077930044374,-74.17761165873084],
+  "Tiernan":[40.74211389580971,-74.17960771474273],
+  "FMH":[40.74194824823075,-74.17886430626339],
+  "ECE":[40.74148403914861,-74.17876516412794],
+  "NJIT Bookstore":[40.74122061658114,-74.1780857575864],
+  "Fenster":[40.74259903233696,-74.1772116993912],
+  "Eberhardt Hall":[40.74282548216093,-74.17710341553955],
+  "Cullimore Hall":[40.742999783794815,-74.17736955981962],
+  "Kupfrian":[40.742497611819225,-74.17854209440154],
+  "NJIT Library":[40.74386467796301,-74.17809100239326],
+  "GITC":[40.74427820993796,-74.17930669533548],
+  "WEC":[40.74226698922005,-74.1803714183182]
+};
 
-    function initMap() {
-      if (mapInitialized) return;
-      mapInitialized = true;
+// Lists per building
+const classroomList = {
+  "CKB":["CKB 216","CKB 227"],
+  "Cullimore Hall":["Cullimore 204"],
+  "Kupfrian":["Kupfrian 110"],
+  "Tiernan":["Tiernan 101"]
+};
+const outletList = {
+  "Campus Center":["2nd Floor Lounge","Game Room"],
+  "Central King Building":["Hallway Outlet"],
+  "GITC":["Atrium Outlet"],
+  "Library":["Study Zone Outlet"]
+};
 
-      const bounds = [[0,0],[1000,1500]];
-      map = L.map("map", { crs:L.CRS.Simple, minZoom:-2, maxZoom:2 });
-      L.imageOverlay("assets/njit-map.png", bounds).addTo(map);
-      map.fitBounds(bounds);
+// Dropdown panel
+function showBuildingInfo(building,type){
+  const map = (type==="room")? window.roomMap : window.outletMap;
+  map.setView(buildingCoords[building],18);
 
-      // Draggable pin
-      marker = L.marker([500, 750], { draggable:true, title:"Move me!" }).addTo(map);
-      marker.bindPopup("Drag this pin to explore outlets").openPopup();
-      marker.on("dragend", e => console.log("Pin moved to:", marker.getLatLng()));
+  const panel = document.getElementById("dropdown-panel");
+  const panelTitle = document.getElementById("panel-title");
+  const panelList = document.getElementById("panel-list");
 
-      // Clickable buildings
-      const buildings = [
-        { name: "Campus Center", bounds:[[700,1000],[800,1100]] },
-        { name: "Central King Building", bounds:[[400,600],[500,700]] },
-        { name: "GITC", bounds:[[200,800],[300,900]] },
-        { name: "Library", bounds:[[600,300],[700,400]] },
-      ];
+  panelTitle.textContent = building;
+  panelList.innerHTML = "";
+  const items = (type==="room")? (classroomList[building]||[]) : (outletList[building]||[]);
+  items.forEach(i=>{
+    const li = document.createElement("li");
+    li.textContent = i;
+    panelList.appendChild(li);
+  });
 
-      buildings.forEach(b => {
-        const rect = L.rectangle(b.bounds, { color: "#b31b1b", weight: 2, fillOpacity: 0.2 }).addTo(map);
-        rect.on("click", () => highlightOutlets(b.name));
-        rect.on("mouseover", () => rect.setStyle({ fillOpacity: 0.4 }));
-        rect.on("mouseout", () => rect.setStyle({ fillOpacity: 0.2 }));
-      });
-    }
+  panel.classList.add("show");
+}
+function closePanel(){ document.getElementById("dropdown-panel").classList.remove("show"); }
 
-    // Highlight outlets in list when a building is clicked
-    function highlightOutlets(buildingName) {
-      const cards = document.querySelectorAll('#outlet-section .outlet-card');
-      cards.forEach(c => {
-        if(c.dataset.building === buildingName) c.style.backgroundColor = '#b31b1b';
-        else c.style.backgroundColor = '#1a1a1a';
-      });
-    }
-  </script>
+// Initialize maps
+function initRoomMap(){
+  window.roomMap = L.map("map-room").setView([40.7428,-74.1785],17);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom:19, attribution:'© OpenStreetMap'
+  }).addTo(window.roomMap);
+
+  Object.entries(buildingCoords).forEach(([name, coord])=>{
+    L.marker(coord,{
+      icon:L.icon({
+        iconUrl:'https://cdn-icons-png.flaticon.com/512/167/167707.png',
+        iconSize:[30,30]
+      })
+    }).addTo(window.roomMap).bindPopup(`<b>${name}</b>`)
+      .on("click",()=>showBuildingInfo(name,"room"));
+  });
+}
+
+// Custom inline SVG plug icon (DivIcon) in blue
+function makePlugIcon(size = 35, color = "#1e90ff"){ // Dodger Blue
+  const half = Math.round(size/2);
+  return L.divIcon({
+    html: `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <!-- Minimal plug: two prongs + body -->
+        <g fill="${color}">
+          <rect x="6" y="2" width="3" height="7" rx="1.5"></rect>
+          <rect x="15" y="2" width="3" height="7" rx="1.5"></rect>
+          <rect x="5" y="9" width="14" height="9" rx="3"></rect>
+          <!-- Cable nub -->
+          <rect x="10.5" y="18" width="3" height="4" rx="1.2"></rect>
+        </g>
+        <!-- Subtle outline for contrast -->
+        <rect x="5" y="9" width="14" height="9" rx="3" fill="none" stroke="#0f3d99" stroke-width="0.8"></rect>
+      </svg>
+    `,
+    className: "plug-icon",
+    iconSize: [size, size],
+    iconAnchor: [half, size],     // bottom center
+    popupAnchor: [0, -size]       // popup above icon
+  });
+}
+
+function initOutletMap(){
+  const outletIcon = makePlugIcon(35, "#1e90ff");
+
+  window.outletMap = L.map("map-outlet").setView([40.7428,-74.1785],17);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom:19, attribution:'© OpenStreetMap'
+  }).addTo(window.outletMap);
+
+  Object.entries(buildingCoords).forEach(([name, coord])=>{
+    L.marker(coord,{ icon: outletIcon })
+      .addTo(window.outletMap).bindPopup(`<b>${name}</b>`)
+      .on("click",()=>showBuildingInfo(name,"outlet"));
+  });
+}
+</script>
 </body>
 </html>
