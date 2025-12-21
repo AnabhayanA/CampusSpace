@@ -457,19 +457,7 @@ Before submitting:
 - [ ] Review browser console for errors
 - [ ] Test with and without MongoDB
 
-## 📄 License
-
-This project is licensed under the MIT License.
-
-### MIT License Summary
-- ✅ Commercial use
-- ✅ Modification
-- ✅ Distribution
-- ✅ Private use
-- ❌ Liability
-- ❌ Warranty
-
-## 👥 Authors
+##  Authors
 
 **Developed for NJIT Students**
 - GitHub: [@AnabhayanA](https://github.com/AnabhayanA)
