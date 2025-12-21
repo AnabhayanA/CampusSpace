@@ -459,7 +459,7 @@ Before submitting:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ### MIT License Summary
 - ✅ Commercial use
@@ -469,13 +469,10 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 - ❌ Liability
 - ❌ Warranty
 
-## 👥 Authors & Contributors
+## 👥 Authors
 
-**Lead Developer**: Your Name
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: yourname@njit.edu
-
-**Contributors**: (Add contributors here)
+**Developed for NJIT Students**
+- GitHub: [@AnabhayanA](https://github.com/AnabhayanA)
 
 ## 🙏 Acknowledgments
 
