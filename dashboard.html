@@ -68,15 +68,15 @@ section:hover { transform: translateY(-5px); }
 }
 #map-room:hover, #map-outlet:hover { transform: scale(1.01); }
 
-/* ----------------- Dropdown Panel ----------------- */
+/* ----------------- Dropdown Panel with Floors ----------------- */
 .dropdown-panel {
   position: fixed;
-  bottom: -320px;
+  bottom: -500px;
   left: 0;
   width: 100%;
-  max-height: 320px;
-  background: rgba(26,26,26,0.95);
-  backdrop-filter: blur(6px);
+  max-height: 500px;
+  background: rgba(26,26,26,0.97);
+  backdrop-filter: blur(10px);
   box-shadow: 0 -6px 20px rgba(0,0,0,0.5);
   border-top: 3px solid #ff2c2c;
   overflow-y: auto;
@@ -88,19 +88,123 @@ section:hover { transform: translateY(-5px); }
   border-top-right-radius: 20px;
 }
 .dropdown-panel.show { bottom: 0; }
-.dropdown-panel h3 { margin-top:0; color: #ffcc00; text-align: center; font-size:1.3rem; letter-spacing:0.5px; }
-.dropdown-panel ul { list-style: none; padding: 0; margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
-.dropdown-panel ul li {
-  background: linear-gradient(135deg,#b31b1b,#ff2c2c);
-  padding: 12px 18px;
-  border-radius: 12px;
-  min-width: 130px;
-  text-align: center;
-  font-weight: bold;
-  cursor: default;
-  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
-.dropdown-panel ul li:hover { background: linear-gradient(135deg,#ff2c2c,#b31b1b); transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+.panel-header h3 {
+  margin: 0;
+  color: #ffcc00;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+.close-panel {
+  background: #b31b1b;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+.close-panel:hover { background: #ff2c2c; }
+.panel-summary {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+.summary-stat {
+  flex: 1;
+}
+.summary-stat .number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4caf50;
+}
+.summary-stat.occupied .number {
+  color: #ff2c2c;
+}
+.summary-stat .label {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-top: 5px;
+}
+.floor-section {
+  margin-bottom: 25px;
+}
+.floor-title {
+  font-size: 1.2rem;
+  color: #ff2c2c;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(255, 44, 44, 0.3);
+}
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.room-card {
+  background: linear-gradient(135deg, rgba(179, 27, 27, 0.3), rgba(255, 44, 44, 0.3));
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 4px solid #4caf50;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+.room-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255, 44, 44, 0.4);
+}
+.room-card.occupied {
+  border-left-color: #ff2c2c;
+  opacity: 0.7;
+}
+.room-card.available {
+  border-left-color: #4caf50;
+}
+.room-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.room-status {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+.room-status .badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.badge.available {
+  background: #4caf50;
+  color: white;
+}
+.badge.occupied {
+  background: #ff2c2c;
+  color: white;
+}
+.room-time {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-top: 5px;
+}
+.no-rooms {
+  text-align: center;
+  padding: 30px;
+  color: #888;
+  font-style: italic;
+}
 
 /* ----------------- Footer ----------------- */
 footer {
@@ -131,6 +235,49 @@ footer {
 
 <section id="room-section" style="display:none;">
   <h3 style="text-align:center;">Classroom Locations</h3>
+  
+  <!-- Filter Controls -->
+  <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center; justify-content: center;">
+      <div>
+        <label style="font-weight: bold; margin-right: 8px;">🔍 Filter:</label>
+        <select id="availability-filter" onchange="applyFilters()" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+          <option value="all">All Rooms</option>
+          <option value="available">🟢 Available Only</option>
+          <option value="occupied">🔴 Occupied Only</option>
+        </select>
+      </div>
+      
+      <div>
+        <label style="font-weight: bold; margin-right: 8px;">🏢 Building:</label>
+        <select id="building-filter" onchange="applyFilters()" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+          <option value="all">All Buildings</option>
+        </select>
+      </div>
+      
+      <div>
+        <label style="font-weight: bold; margin-right: 8px;">📅 Time:</label>
+        <select id="time-filter" onchange="applyFilters()" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+          <option value="now">Available Now</option>
+          <option value="1hour">In 1 Hour</option>
+          <option value="2hour">In 2 Hours</option>
+          <option value="today">All Day</option>
+        </select>
+      </div>
+      
+      <button onclick="clearFilters()" style="background: #666; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">
+        Clear Filters
+      </button>
+      
+      <button onclick="showAllRoomsView()" style="background: #b31b1b; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">
+        📋 List View
+      </button>
+    </div>
+    
+    <div id="filter-results" style="margin-top: 15px; text-align: center; font-weight: bold; color: #b31b1b;">
+    </div>
+  </div>
+  
   <div id="map-room"></div>
 </section>
 
@@ -140,14 +287,32 @@ footer {
 </section>
 
 <div id="dropdown-panel" class="dropdown-panel">
-  <h3 id="panel-title"></h3>
-  <ul id="panel-list"></ul>
+  <div class="panel-header">
+    <h3 id="panel-title"></h3>
+    <button class="close-panel" onclick="closePanel()">✕ Close</button>
+  </div>
+  <div id="panel-summary" class="panel-summary" style="display:none;">
+    <div class="summary-stat available">
+      <div class="number" id="available-count">0</div>
+      <div class="label">Available</div>
+    </div>
+    <div class="summary-stat occupied">
+      <div class="number" id="occupied-count">0</div>
+      <div class="label">Occupied</div>
+    </div>
+    <div class="summary-stat">
+      <div class="number" id="total-count">0</div>
+      <div class="label">Total Rooms</div>
+    </div>
+  </div>
+  <div id="panel-content"></div>
 </div>
 
 <footer>
   <p>© 2025 CampusSpace | Built for students, by students</p>
 </footer>
 
+<script src="api-client.js"></script>
 <script>
 // --- LOGIN ---
 const njitId = localStorage.getItem("njitId");
@@ -187,39 +352,379 @@ const buildingCoords = {
   "WEC":[40.74226698922005,-74.1803714183182]
 };
 
-// Lists per building
-const classroomList = {
-  "CKB":["CKB 216","CKB 227"],
-  "Cullimore Hall":["Cullimore 204"],
-  "Kupfrian":["Kupfrian 110"],
-  "Tiernan":["Tiernan 101"]
-};
-const outletList = {
+// Real-time classroom and outlet data
+let classroomList = {};
+let outletList = {
   "Campus Center":["2nd Floor Lounge","Game Room"],
   "Central King Building":["Hallway Outlet"],
   "GITC":["Atrium Outlet"],
   "Library":["Study Zone Outlet"]
 };
+let roomAvailabilityData = {};
+let allRoomsData = [];
+let currentFilters = {
+  availability: 'all',
+  building: 'all',
+  time: 'now'
+};
 
-// Dropdown panel
-function showBuildingInfo(building,type){
-  const map = (type==="room")? window.roomMap : window.outletMap;
-  map.setView(buildingCoords[building],18);
+// Load real classroom data from backend
+async function loadRoomData() {
+  try {
+    const result = await CampusSpaceAPI.getRoomAvailability();
+    if (result.success) {
+      roomAvailabilityData = result;
+      allRoomsData = [...result.availableRooms, ...result.occupiedRooms];
+      
+      // Group rooms by building
+      classroomList = {};
+      
+      allRoomsData.forEach(room => {
+        const building = room.room.split(' ')[0]; // Extract building code
+        if (!classroomList[building]) {
+          classroomList[building] = [];
+        }
+        
+        const status = room.isAvailable ? '🟢 Available' : '🔴 Occupied';
+        const nextInfo = room.nextClass ? ` (Next: ${room.nextClass.startTime})` : '';
+        classroomList[building].push(`${room.room} - ${status}${nextInfo}`);
+      });
+      
+      // Populate building filter dropdown
+      populateBuildingFilter();
+      
+      console.log('✅ Loaded room data:', result.summary);
+      updateFilterResults();
+    }
+  } catch (error) {
+    console.error('Error loading room data:', error);
+  }
+}
+
+// Populate building filter dropdown
+function populateBuildingFilter() {
+  const buildingFilter = document.getElementById('building-filter');
+  if (!buildingFilter) return;
+  
+  const buildings = new Set();
+  allRoomsData.forEach(room => {
+    const building = room.room.split(' ')[0];
+    buildings.add(building);
+  });
+  
+  // Clear existing options except "All Buildings"
+  buildingFilter.innerHTML = '<option value="all">All Buildings</option>';
+  
+  // Add building options
+  Array.from(buildings).sort().forEach(building => {
+    const option = document.createElement('option');
+    option.value = building;
+    option.textContent = building;
+    buildingFilter.appendChild(option);
+  });
+}
+
+// Apply filters
+function applyFilters() {
+  const availabilityFilter = document.getElementById('availability-filter');
+  const buildingFilter = document.getElementById('building-filter');
+  const timeFilter = document.getElementById('time-filter');
+  
+  if (availabilityFilter) currentFilters.availability = availabilityFilter.value;
+  if (buildingFilter) currentFilters.building = buildingFilter.value;
+  if (timeFilter) currentFilters.time = timeFilter.value;
+  
+  updateFilterResults();
+}
+
+// Clear filters
+function clearFilters() {
+  currentFilters = { availability: 'all', building: 'all', time: 'now' };
+  
+  const availabilityFilter = document.getElementById('availability-filter');
+  const buildingFilter = document.getElementById('building-filter');
+  const timeFilter = document.getElementById('time-filter');
+  
+  if (availabilityFilter) availabilityFilter.value = 'all';
+  if (buildingFilter) buildingFilter.value = 'all';
+  if (timeFilter) timeFilter.value = 'now';
+  
+  updateFilterResults();
+}
+
+// Update filter results display
+function updateFilterResults() {
+  const filterResults = document.getElementById('filter-results');
+  if (!filterResults) return;
+  
+  let filteredRooms = allRoomsData.filter(room => {
+    // Availability filter
+    if (currentFilters.availability === 'available' && !room.isAvailable) return false;
+    if (currentFilters.availability === 'occupied' && room.isAvailable) return false;
+    
+    // Building filter
+    if (currentFilters.building !== 'all') {
+      const building = room.room.split(' ')[0];
+      if (building !== currentFilters.building) return false;
+    }
+    
+    return true;
+  });
+  
+  const availableCount = filteredRooms.filter(r => r.isAvailable).length;
+  const occupiedCount = filteredRooms.filter(r => !r.isAvailable).length;
+  
+  filterResults.innerHTML = `
+    Showing ${filteredRooms.length} rooms: 
+    <span style="color: #4caf50;">🟢 ${availableCount} Available</span> | 
+    <span style="color: #ff2c2c;">🔴 ${occupiedCount} Occupied</span>
+  `;
+}
+
+// Show all rooms in a list view
+function showAllRoomsView() {
+  let filteredRooms = allRoomsData.filter(room => {
+    if (currentFilters.availability === 'available' && !room.isAvailable) return false;
+    if (currentFilters.availability === 'occupied' && room.isAvailable) return false;
+    
+    if (currentFilters.building !== 'all') {
+      const building = room.room.split(' ')[0];
+      if (building !== currentFilters.building) return false;
+    }
+    
+    return true;
+  });
+  
+  // Group by building
+  const byBuilding = {};
+  filteredRooms.forEach(room => {
+    const building = room.room.split(' ')[0];
+    if (!byBuilding[building]) byBuilding[building] = [];
+    byBuilding[building].push(room);
+  });
+  
+  const panel = document.getElementById("dropdown-panel");
+  const panelTitle = document.getElementById("panel-title");
+  const panelContent = document.getElementById("panel-content");
+  const panelSummary = document.getElementById("panel-summary");
+
+  panelTitle.textContent = "All Classrooms";
+  panelSummary.style.display = "flex";
+  
+  const availableCount = filteredRooms.filter(r => r.isAvailable).length;
+  const occupiedCount = filteredRooms.filter(r => !r.isAvailable).length;
+  document.getElementById('available-count').textContent = availableCount;
+  document.getElementById('occupied-count').textContent = occupiedCount;
+  document.getElementById('total-count').textContent = filteredRooms.length;
+  
+  panelContent.innerHTML = "";
+  
+  Object.keys(byBuilding).sort().forEach(building => {
+    const buildingSection = document.createElement('div');
+    buildingSection.className = 'floor-section';
+    
+    const buildingTitle = document.createElement('div');
+    buildingTitle.className = 'floor-title';
+    const availInBuilding = byBuilding[building].filter(r => r.isAvailable).length;
+    buildingTitle.textContent = `${building} (${availInBuilding}/${byBuilding[building].length} available)`;
+    buildingSection.appendChild(buildingTitle);
+    
+    const roomGrid = document.createElement('div');
+    roomGrid.className = 'room-grid';
+    
+    byBuilding[building].sort((a, b) => a.room.localeCompare(b.room)).forEach(room => {
+      const card = document.createElement('div');
+      card.className = `room-card ${room.isAvailable ? 'available' : 'occupied'}`;
+      
+      let statusHtml = `<span class="badge ${room.isAvailable ? 'available' : 'occupied'}">
+                        ${room.isAvailable ? '🟢 Available' : '🔴 Occupied'}
+                      </span>`;
+      
+      let timeHtml = '';
+      if (room.isAvailable && room.nextClass) {
+        timeHtml = `<div class="room-time">Next: ${room.nextClass.startTime}</div>`;
+      } else if (!room.isAvailable && room.currentClass) {
+        timeHtml = `<div class="room-time">Until: ${room.currentClass.times.split(' - ')[1]}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="room-name">${room.room}</div>
+        <div class="room-status">${statusHtml}</div>
+        ${timeHtml}
+      `;
+      
+      roomGrid.appendChild(card);
+    });
+    
+    buildingSection.appendChild(roomGrid);
+    panelContent.appendChild(buildingSection);
+  });
+  
+  panel.classList.add("show");
+}
+
+// Auto-refresh room data every 5 minutes
+loadRoomData();
+setInterval(loadRoomData, 5 * 60 * 1000);
+
+// Dropdown panel - Enhanced with floors and availability
+async function showBuildingInfo(building, type) {
+  const map = (type === "room") ? window.roomMap : window.outletMap;
+  map.setView(buildingCoords[building], 18);
 
   const panel = document.getElementById("dropdown-panel");
   const panelTitle = document.getElementById("panel-title");
-  const panelList = document.getElementById("panel-list");
+  const panelContent = document.getElementById("panel-content");
+  const panelSummary = document.getElementById("panel-summary");
 
   panelTitle.textContent = building;
-  panelList.innerHTML = "";
-  const items = (type==="room")? (classroomList[building]||[]) : (outletList[building]||[]);
-  items.forEach(i=>{
-    const li = document.createElement("li");
-    li.textContent = i;
-    panelList.appendChild(li);
-  });
+  panelContent.innerHTML = "";
+
+  if (type === "room") {
+    // Show room availability with floors
+    panelSummary.style.display = "flex";
+    
+    // Get rooms for this building from API
+    const buildingCode = getBuildingCode(building);
+    const buildingRooms = Object.values(roomAvailabilityData.availableRooms || [])
+      .concat(Object.values(roomAvailabilityData.occupiedRooms || []))
+      .filter(room => room.room.startsWith(buildingCode));
+
+    if (buildingRooms.length === 0) {
+      // Fallback to classroomList
+      const items = classroomList[buildingCode] || classroomList[building] || [];
+      if (items.length === 0) {
+        panelContent.innerHTML = '<div class="no-rooms">No room data available for this building</div>';
+      } else {
+        // Simple list view
+        const roomGrid = document.createElement('div');
+        roomGrid.className = 'room-grid';
+        items.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'room-card';
+          card.innerHTML = `<div class="room-name">${item}</div>`;
+          roomGrid.appendChild(card);
+        });
+        panelContent.appendChild(roomGrid);
+      }
+    } else {
+      // Organize rooms by floor
+      const floors = {};
+      buildingRooms.forEach(room => {
+        const roomNum = room.room.split(' ')[1] || '???';
+        const floor = roomNum.charAt(0) || 'Unknown'; // First digit is floor
+        
+        if (!floors[floor]) {
+          floors[floor] = { available: [], occupied: [] };
+        }
+        
+        if (room.isAvailable) {
+          floors[floor].available.push(room);
+        } else {
+          floors[floor].occupied.push(room);
+        }
+      });
+
+      // Update summary
+      const availableCount = buildingRooms.filter(r => r.isAvailable).length;
+      const occupiedCount = buildingRooms.filter(r => !r.isAvailable).length;
+      document.getElementById('available-count').textContent = availableCount;
+      document.getElementById('occupied-count').textContent = occupiedCount;
+      document.getElementById('total-count').textContent = buildingRooms.length;
+
+      // Display floors
+      const sortedFloors = Object.keys(floors).sort();
+      sortedFloors.forEach(floorNum => {
+        const floorSection = document.createElement('div');
+        floorSection.className = 'floor-section';
+        
+        const floorTitle = document.createElement('div');
+        floorTitle.className = 'floor-title';
+        const floorName = floorNum === '0' ? 'Ground Floor' : 
+                         floorNum === '1' ? '1st Floor' :
+                         floorNum === '2' ? '2nd Floor' :
+                         floorNum === '3' ? '3rd Floor' :
+                         `${floorNum}th Floor`;
+        const totalOnFloor = floors[floorNum].available.length + floors[floorNum].occupied.length;
+        floorTitle.textContent = `${floorName} (${floors[floorNum].available.length}/${totalOnFloor} available)`;
+        floorSection.appendChild(floorTitle);
+
+        const roomGrid = document.createElement('div');
+        roomGrid.className = 'room-grid';
+
+        // Show available rooms first
+        [...floors[floorNum].available, ...floors[floorNum].occupied].forEach(room => {
+          const card = document.createElement('div');
+          card.className = `room-card ${room.isAvailable ? 'available' : 'occupied'}`;
+          
+          let statusHtml = `<span class="badge ${room.isAvailable ? 'available' : 'occupied'}">
+                            ${room.isAvailable ? '🟢 Available' : '🔴 Occupied'}
+                          </span>`;
+          
+          let timeHtml = '';
+          if (room.isAvailable && room.nextClass) {
+            timeHtml = `<div class="room-time">Next: ${room.nextClass.startTime}</div>`;
+          } else if (!room.isAvailable && room.currentClass) {
+            timeHtml = `<div class="room-time">Until: ${room.currentClass.times.split(' - ')[1]}</div>`;
+          }
+
+          card.innerHTML = `
+            <div class="room-name">${room.room}</div>
+            <div class="room-status">${statusHtml}</div>
+            ${timeHtml}
+          `;
+          
+          roomGrid.appendChild(card);
+        });
+
+        floorSection.appendChild(roomGrid);
+        panelContent.appendChild(floorSection);
+      });
+    }
+  } else {
+    // Outlet view
+    panelSummary.style.display = "none";
+    const items = outletList[building] || [];
+    
+    if (items.length === 0) {
+      panelContent.innerHTML = '<div class="no-rooms">No outlet data available for this building</div>';
+    } else {
+      const roomGrid = document.createElement('div');
+      roomGrid.className = 'room-grid';
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'room-card available';
+        card.innerHTML = `
+          <div class="room-name">⚡ ${item}</div>
+          <div class="room-status"><span class="badge available">Available</span></div>
+        `;
+        roomGrid.appendChild(card);
+      });
+      panelContent.appendChild(roomGrid);
+    }
+  }
 
   panel.classList.add("show");
+}
+
+// Helper function to get building code
+function getBuildingCode(buildingName) {
+  const mappings = {
+    "Kupfrian": "KUPF",
+    "Campus Center": "CC",
+    "Central King Building": "CKB",
+    "Tiernan": "Tiernan",
+    "FMH": "FMH",
+    "ECE": "ECE",
+    "NJIT Bookstore": "Store",
+    "Fenster": "Fenster",
+    "Eberhardt Hall": "Eberhardt",
+    "Cullimore Hall": "Cullimore",
+    "NJIT Library": "Library",
+    "GITC": "GITC",
+    "WEC": "WEC"
+  };
+  return mappings[buildingName] || buildingName.split(' ')[0];
 }
 function closePanel(){ document.getElementById("dropdown-panel").classList.remove("show"); }
 

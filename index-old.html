@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusSpace | Login</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .login-container {
+      max-width: 400px;
+      background: white;
+      padding: 25px;
+      margin: 100px auto;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .login-title {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: #b31b1b;
+    }
+
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 8px;
+      border: 1px solid #bbb;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #b31b1b;
+      box-shadow: 0 0 3px rgba(179, 27, 27, 0.6);
+    }
+
+    .login-btn {
+      width: 100%;
+      background-color: #b31b1b;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .login-btn:hover {
+      background-color: #ff2c2c;
+      transform: scale(1.03);
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>CampusSpace</h1>
+  </header>
+
+  <div class="login-container">
+    <h2 class="login-title">Login</h2>
+    <p>Enter your NJIT ID to continue</p>
+
+    <input type="text" id="njitId" placeholder="Enter NJIT ID (e.g. aa123)" />
+    <button class="login-btn" onclick="login()">Continue</button>
+
+    <p id="loginError" class="error"></p>
+  </div>
+
+  <footer>
+    <p>© 2025 CampusSpace | Helping NJIT Students Find Space</p>
+  </footer>
+
+  <script>
+    function login() {
+      const id = document.getElementById("njitId").value.trim();
+      const error = document.getElementById("loginError");
+
+      if (id.length < 3) {
+        error.textContent = "Please enter a valid NJIT ID.";
+        return;
+      }
+
+      // Save login
+      localStorage.setItem("njitId", id);
+
+      // Redirect to dashboard
+      window.location.href = "dashboard.html";
+    }
+  </script>
+</body>
+</html>

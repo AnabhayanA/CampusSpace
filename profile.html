@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - CampusSpace</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+
+    .profile-header {
+      background: linear-gradient(135deg, #b31b1b 0%, #ff2c2c 100%);
+      color: white;
+      padding: 40px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 5px solid white;
+      margin-bottom: 20px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .profile-avatar i {
+      font-size: 4rem;
+      color: #b31b1b;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #b31b1b;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .favorite-item {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .favorite-item:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container py-5">
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <i class="bi bi-person-circle"></i>
+      </div>
+      <h2 id="userName">Loading...</h2>
+      <p class="mb-0">NJIT Student</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="row mb-4">
+      <div class="col-md-4 mb-3">
+        <div class="stat-card">
+          <div class="stat-number">24</div>
+          <div class="stat-label">Rooms Visited</div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="stat-card">
+          <div class="stat-number">5</div>
+          <div class="stat-label">Favorite Locations</div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="stat-card">
+          <div class="stat-number">12</div>
+          <div class="stat-label">Reports Submitted</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Favorite Locations -->
+    <div class="card shadow">
+      <div class="card-body">
+        <h4 class="mb-4"><i class="bi bi-star-fill text-warning me-2"></i>Favorite Locations</h4>
+        <div id="favoritesList">
+          <div class="favorite-item">
+            <div>
+              <strong>KUPF 207</strong>
+              <p class="mb-0 text-muted small">Kupfrian Hall - 2nd Floor</p>
+            </div>
+            <button class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+          <div class="favorite-item">
+            <div>
+              <strong>GITC 1400</strong>
+              <p class="mb-0 text-muted small">GITC - 1st Floor</p>
+            </div>
+            <button class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center mt-4">
+      <a href="dashboard.html" class="btn btn-primary">
+        <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+      </a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const njitId = localStorage.getItem("njitId") || sessionStorage.getItem("njitId");
+    if (!njitId) {
+      window.location.href = "index.html";
+    } else {
+      document.getElementById("userName").textContent = njitId.toUpperCase();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusSpace API Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #b31b1b;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .btn {
+      background: #b31b1b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .btn:hover {
+      background: #8a1515;
+    }
+    pre {
+      background: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+    }
+    .available {
+      background: #4caf50;
+      color: white;
+    }
+    .occupied {
+      background: #f44336;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏫 CampusSpace API Test Dashboard</h1>
+  
+  <div class="test-section">
+    <h2>Backend Health Check</h2>
+    <button class="btn" onclick="testHealth()">Check Health</button>
+    <pre id="health-result">Click button to test...</pre>
+  </div>
+
+  <div class="test-section">
+    <h2>Room Availability</h2>
+    <button class="btn" onclick="testRoomAvailability()">Get Room Availability</button>
+    <pre id="room-result">Click button to test...</pre>
+  </div>
+
+  <div class="test-section">
+    <h2>All Courses</h2>
+    <button class="btn" onclick="testCourses()">Get All Courses</button>
+    <pre id="courses-result">Click button to test...</pre>
+  </div>
+
+  <div class="test-section">
+    <h2>Buildings</h2>
+    <button class="btn" onclick="testBuildings()">Get Buildings</button>
+    <pre id="buildings-result">Click button to test...</pre>
+  </div>
+
+  <div class="test-section">
+    <h2>Specific Room</h2>
+    <input type="text" id="room-name" placeholder="e.g., KUPF 207" style="padding: 8px; width: 200px;">
+    <button class="btn" onclick="testSpecificRoom()">Get Room Status</button>
+    <pre id="specific-room-result">Enter room name and click button...</pre>
+  </div>
+
+  <script src="api-client.js"></script>
+  <script>
+    async function testHealth() {
+      const result = document.getElementById('health-result');
+      result.textContent = 'Loading...';
+      try {
+        const data = await CampusSpaceAPI.healthCheck();
+        result.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        result.textContent = 'Error: ' + error.message;
+      }
+    }
+
+    async function testRoomAvailability() {
+      const result = document.getElementById('room-result');
+      result.textContent = 'Loading...';
+      try {
+        const data = await CampusSpaceAPI.getRoomAvailability();
+        
+        let output = `Summary:\n`;
+        output += `Total Rooms: ${data.summary.total}\n`;
+        output += `Available: ${data.summary.available}\n`;
+        output += `Occupied: ${data.summary.occupied}\n\n`;
+        
+        output += `Available Rooms:\n`;
+        data.availableRooms.forEach(room => {
+          output += `  ✅ ${room.room}`;
+          if (room.nextClass) {
+            output += ` (Next class: ${room.nextClass.startTime})`;
+          }
+          output += `\n`;
+        });
+        
+        output += `\nOccupied Rooms:\n`;
+        data.occupiedRooms.forEach(room => {
+          output += `  ❌ ${room.room}`;
+          if (room.currentClass) {
+            output += ` (${room.currentClass.times})`;
+          }
+          output += `\n`;
+        });
+        
+        result.textContent = output;
+      } catch (error) {
+        result.textContent = 'Error: ' + error.message;
+      }
+    }
+
+    async function testCourses() {
+      const result = document.getElementById('courses-result');
+      result.textContent = 'Loading...';
+      try {
+        const data = await CampusSpaceAPI.getCourses();
+        result.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        result.textContent = 'Error: ' + error.message;
+      }
+    }
+
+    async function testBuildings() {
+      const result = document.getElementById('buildings-result');
+      result.textContent = 'Loading...';
+      try {
+        const data = await CampusSpaceAPI.getBuildings();
+        
+        let output = `Total Buildings: ${data.count}\n\n`;
+        data.buildings.forEach(building => {
+          output += `${building.name} (${building.roomCount} rooms):\n`;
+          building.rooms.forEach(room => {
+            output += `  - ${room}\n`;
+          });
+          output += `\n`;
+        });
+        
+        result.textContent = output;
+      } catch (error) {
+        result.textContent = 'Error: ' + error.message;
+      }
+    }
+
+    async function testSpecificRoom() {
+      const roomName = document.getElementById('room-name').value;
+      const result = document.getElementById('specific-room-result');
+      
+      if (!roomName) {
+        result.textContent = 'Please enter a room name';
+        return;
+      }
+      
+      result.textContent = 'Loading...';
+      try {
+        const data = await CampusSpaceAPI.getRoomStatus(roomName);
+        result.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        result.textContent = 'Error: ' + error.message;
+      }
+    }
+
+    // Auto-run health check on load
+    window.addEventListener('load', () => {
+      testHealth();
+    });
+  </script>
+</body>
+</html>

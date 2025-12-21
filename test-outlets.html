@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outlet API Test | CampusSpace</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  
+  <style>
+    body {
+      background: #f8f9fa;
+      padding: 20px 0;
+    }
+    .test-card {
+      margin-bottom: 20px;
+    }
+    .endpoint-url {
+      background: #e9ecef;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      margin: 10px 0;
+    }
+    .response-box {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 15px;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .status-badge {
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col">
+        <h1><i class="bi bi-plug"></i> Outlet API Test Console</h1>
+        <p class="text-muted">Test all outlet API endpoints</p>
+      </div>
+    </div>
+
+    <!-- Database Status -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5><i class="bi bi-database"></i> Database Status</h5>
+        <div id="dbStatus" class="mt-3">
+          <div class="spinner-border spinner-border-sm" role="status"></div>
+          Checking...
+        </div>
+      </div>
+    </div>
+
+    <!-- Get All Outlets -->
+    <div class="card test-card">
+      <div class="card-header">
+        <h5><span class="badge bg-success">GET</span> Get All Outlets</h5>
+      </div>
+      <div class="card-body">
+        <div class="endpoint-url">/api/outlets</div>
+        <button class="btn btn-primary" onclick="testGetAllOutlets()">
+          <i class="bi bi-play-fill"></i> Test
+        </button>
+        <div id="result-all" class="response-box mt-3" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Get Available Outlets -->
+    <div class="card test-card">
+      <div class="card-header">
+        <h5><span class="badge bg-success">GET</span> Get Available Outlets</h5>
+      </div>
+      <div class="card-body">
+        <div class="endpoint-url">/api/outlets/available</div>
+        <button class="btn btn-primary" onclick="testGetAvailable()">
+          <i class="bi bi-play-fill"></i> Test
+        </button>
+        <div id="result-available" class="response-box mt-3" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Get Outlets by Location -->
+    <div class="card test-card">
+      <div class="card-header">
+        <h5><span class="badge bg-success">GET</span> Get Outlets by Location</h5>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label>Building:</label>
+            <select id="building-filter" class="form-select">
+              <option value="KUPF">KUPF</option>
+              <option value="GITC">GITC</option>
+              <option value="FMH">FMH</option>
+              <option value="CAB">CAB</option>
+              <option value="CKB">CKB</option>
+              <option value="Tiernan">Tiernan</option>
+              <option value="Cullimore">Cullimore</option>
+              <option value="WEC">WEC</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label>Floor:</label>
+            <input type="number" id="floor-filter" class="form-control" value="2" min="1" max="10">
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="testGetByLocation()">
+          <i class="bi bi-play-fill"></i> Test
+        </button>
+        <div id="result-location" class="response-box mt-3" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Get Statistics -->
+    <div class="card test-card">
+      <div class="card-header">
+        <h5><span class="badge bg-success">GET</span> Get Outlet Statistics</h5>
+      </div>
+      <div class="card-body">
+        <div class="endpoint-url">/api/outlets/stats/summary</div>
+        <button class="btn btn-primary" onclick="testGetStats()">
+          <i class="bi bi-play-fill"></i> Test
+        </button>
+        <div id="result-stats" class="response-box mt-3" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Create Outlet -->
+    <div class="card test-card">
+      <div class="card-header">
+        <h5><span class="badge bg-warning text-dark">POST</span> Create New Outlet</h5>
+      </div>
+      <div class="card-body">
+        <div class="endpoint-url">/api/outlets</div>
+        <textarea id="create-data" class="form-control mb-3" rows="8">{
+  "outletId": "TEST-1-101-1",
+  "building": "TEST",
+  "floor": 1,
+  "room": "TEST 101",
+  "type": "standard",
+  "totalPorts": 2,
+  "availablePorts": 2,
+  "status": "available",
+  "notes": "Test outlet created from API console"
+}</textarea>
+        <button class="btn btn-warning" onclick="testCreateOutlet()">
+          <i class="bi bi-plus-circle"></i> Create
+        </button>
+        <div id="result-create" class="response-box mt-3" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Add User Report -->
+    <div class="card test-card">
+      <div class="card-header">
+        <h5><span class="badge bg-warning text-dark">POST</span> Add User Report</h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label>Outlet ID:</label>
+          <input type="text" id="report-outlet-id" class="form-control" placeholder="Enter outlet MongoDB ID">
+        </div>
+        <div class="mb-3">
+          <label>Status:</label>
+          <select id="report-status" class="form-select">
+            <option value="available">Available</option>
+            <option value="occupied">Occupied</option>
+            <option value="broken">Broken</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>Comment:</label>
+          <input type="text" id="report-comment" class="form-control" value="Test report from API console">
+        </div>
+        <button class="btn btn-warning" onclick="testAddReport()">
+          <i class="bi bi-chat-dots"></i> Add Report
+        </button>
+        <div id="result-report" class="response-box mt-3" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:3000/api';
+
+    async function checkDatabaseStatus() {
+      try {
+        const response = await fetch(`${API_BASE}/health`);
+        const data = await response.json();
+        const dbDiv = document.getElementById('dbStatus');
+        
+        if (data.success) {
+          dbDiv.innerHTML = `
+            <div class="alert alert-success">
+              <i class="bi bi-check-circle"></i> <strong>Server Running</strong><br>
+              Courses Loaded: ${data.coursesLoaded}<br>
+              Last Updated: ${data.lastUpdated || 'N/A'}
+            </div>
+            <div class="alert alert-warning">
+              <i class="bi bi-info-circle"></i> <strong>Note:</strong> MongoDB not connected. Running in development mode.<br>
+              To enable database: Install MongoDB or set MONGODB_URI environment variable.
+            </div>
+          `;
+        }
+      } catch (error) {
+        document.getElementById('dbStatus').innerHTML = `
+          <div class="alert alert-danger">
+            <i class="bi bi-x-circle"></i> Server not running. Start with: <code>npm start</code>
+          </div>
+        `;
+      }
+    }
+
+    async function testGetAllOutlets() {
+      const resultDiv = document.getElementById('result-all');
+      resultDiv.style.display = 'block';
+      resultDiv.textContent = 'Loading...';
+      
+      try {
+        const response = await fetch(`${API_BASE}/outlets`);
+        const data = await response.json();
+        resultDiv.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    async function testGetAvailable() {
+      const resultDiv = document.getElementById('result-available');
+      resultDiv.style.display = 'block';
+      resultDiv.textContent = 'Loading...';
+      
+      try {
+        const response = await fetch(`${API_BASE}/outlets/available`);
+        const data = await response.json();
+        resultDiv.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    async function testGetByLocation() {
+      const building = document.getElementById('building-filter').value;
+      const floor = document.getElementById('floor-filter').value;
+      const resultDiv = document.getElementById('result-location');
+      resultDiv.style.display = 'block';
+      resultDiv.textContent = 'Loading...';
+      
+      try {
+        const response = await fetch(`${API_BASE}/outlets/location/${building}/${floor}`);
+        const data = await response.json();
+        resultDiv.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    async function testGetStats() {
+      const resultDiv = document.getElementById('result-stats');
+      resultDiv.style.display = 'block';
+      resultDiv.textContent = 'Loading...';
+      
+      try {
+        const response = await fetch(`${API_BASE}/outlets/stats/summary`);
+        const data = await response.json();
+        resultDiv.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    async function testCreateOutlet() {
+      const resultDiv = document.getElementById('result-create');
+      resultDiv.style.display = 'block';
+      resultDiv.textContent = 'Creating...';
+      
+      try {
+        const data = JSON.parse(document.getElementById('create-data').value);
+        const response = await fetch(`${API_BASE}/outlets`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        resultDiv.textContent = JSON.stringify(result, null, 2);
+      } catch (error) {
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    async function testAddReport() {
+      const outletId = document.getElementById('report-outlet-id').value;
+      if (!outletId) {
+        alert('Please enter an outlet ID first. Get one from "Get All Outlets" test.');
+        return;
+      }
+      
+      const resultDiv = document.getElementById('result-report');
+      resultDiv.style.display = 'block';
+      resultDiv.textContent = 'Adding report...';
+      
+      try {
+        const data = {
+          userId: 'test-user-' + Date.now(),
+          status: document.getElementById('report-status').value,
+          comment: document.getElementById('report-comment').value
+        };
+        
+        const response = await fetch(`${API_BASE}/outlets/${outletId}/report`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        resultDiv.textContent = JSON.stringify(result, null, 2);
+      } catch (error) {
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    // Check database status on load
+    checkDatabaseStatus();
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+[2025-12-21 10:16:45.123] [INFO] [API] - GET /api/health - 200 - 5ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:16:52.456] [INFO] [API] - GET /api/rooms/availability - 200 - 125ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:17:15.789] [INFO] [API] - GET /api/courses - 200 - 8ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:17:30.012] [INFO] [API] - GET /api/buildings - 200 - 15ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:18:22.345] [INFO] [API] - GET /api/rooms/KUPF%20207 - 200 - 12ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:20:00.678] [ERROR] [API] - GET /api/invalid-endpoint - 404 - 2ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:22:15.901] [INFO] [API] - POST /api/refresh - 200 - 2345ms | {"ip":"127.0.0.1"}
+[2025-12-21 11:15:45.567] [INFO] [API] - GET /dashboard.html - 200 - 15ms | {"ip":"192.168.1.105"}
+[2025-12-21 11:15:46.123] [INFO] [API] - GET /api/rooms/availability - 200 - 98ms | {"ip":"192.168.1.105"}
+[2025-12-21 11:16:23.456] [INFO] [API] - GET /api/buildings - 200 - 8ms | {"ip":"192.168.1.105"}
+[2025-12-21 11:25:30.012] [INFO] [API] - GET /profile.html - 200 - 12ms | {"ip":"192.168.1.105"}
+[2025-12-21 11:30:45.234] [INFO] [API] - GET /settings.html - 200 - 10ms | {"ip":"192.168.1.105"}
+[2025-12-21 12:15:30.890] [WARN] [API] - Slow request detected | {"path":"/api/rooms/availability","responseTime":1250}
+[2025-12-21 14:30:45.567] [INFO] [RoomAvailability] - Peak usage detected | {"activeUsers":45,"requests":234}
+[2025-12-21 16:45:30.456] [INFO] [API] - GET /test-api.html - 200 - 8ms | {"ip":"192.168.1.105"}
+[2025-12-21 14:36:45.227] [INFO] [API] - GET /api/rooms/availability - 200 - 7ms | {"ip":"::1"}
+[2025-12-21 14:36:56.131] [INFO] [API] - GET /api/rooms/availability - 200 - 4ms | {"ip":"::1"}
+[2025-12-21 14:37:26.285] [INFO] [API] - GET /.well-known/appspecific/com.chrome.devtools.json - 404 - 2ms | {"ip":"::1"}
+[2025-12-21 14:38:19.685] [INFO] [API] - GET /api/rooms/availability - 200 - 5ms | {"ip":"::1"}
+[2025-12-21 14:39:44.243] [INFO] [API] - GET /api/rooms/availability - 200 - 2ms | {"ip":"::1"}
+[2025-12-21 14:48:01.470] [INFO] [API] - GET /api/rooms/availability - 200 - 4ms | {"ip":"::1"}
+[2025-12-21 14:48:09.274] [INFO] [API] - GET /api/health - 200 - 1ms | {"ip":"::1"}
+[2025-12-21 14:48:37.503] [INFO] [API] - GET /stats/summary - 500 - 10017ms | {"ip":"::1"}
+[2025-12-21 15:05:59.874] [INFO] [API] - GET /api/rooms/availability - 200 - 5ms | {"ip":"::1"}
+[2025-12-21 15:07:29.023] [INFO] [API] - GET /api/rooms/availability - 200 - 7ms | {"ip":"::1"}

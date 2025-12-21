@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}} - CampusSpace</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      background: linear-gradient(135deg, #b31b1b 0%, #ff2c2c 100%);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: white !important;
+    }
+
+    .nav-link {
+      color: rgba(255,255,255,0.9) !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 8px 15px !important;
+      border-radius: 8px;
+    }
+
+    .nav-link:hover {
+      background: rgba(255,255,255,0.1);
+      color: white !important;
+    }
+
+    .nav-link.active {
+      background: rgba(255,255,255,0.2);
+      color: white !important;
+    }
+
+    /* Main Content Area */
+    .main-content {
+      padding: 30px 0;
+      min-height: calc(100vh - 200px);
+    }
+
+    .page-header {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #b31b1b;
+      margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    /* Card Styling */
+    .custom-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .custom-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    /* Footer */
+    .footer {
+      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      color: white;
+      padding: 40px 0 20px;
+      margin-top: 50px;
+    }
+
+    .footer h5 {
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .footer a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer a:hover {
+      color: white;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, #b31b1b 0%, #ff2c2c 100%);
+      border: none;
+      padding: 10px 25px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(179, 27, 27, 0.3);
+    }
+
+    /* Mobile Bottom Navigation */
+    @media (max-width: 768px) {
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+      }
+
+      .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #666;
+        font-size: 0.75rem;
+        transition: color 0.3s ease;
+      }
+
+      .bottom-nav-item i {
+        font-size: 1.5rem;
+        margin-bottom: 4px;
+      }
+
+      .bottom-nav-item.active {
+        color: #b31b1b;
+      }
+
+      .main-content {
+        padding-bottom: 80px;
+      }
+    }
+
+    /* Loading Spinner */
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+    }
+
+    .spinner-border-custom {
+      width: 3rem;
+      height: 3rem;
+      border: 0.3rem solid rgba(179, 27, 27, 0.2);
+      border-top-color: #b31b1b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="dashboard.html">
+        <i class="bi bi-geo-alt-fill me-2"></i>CampusSpace
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html">
+              <i class="bi bi-house-door me-1"></i>Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="room-details.html">
+              <i class="bi bi-building me-1"></i>Rooms
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="outlets.html">
+              <i class="bi bi-lightning-charge me-1"></i>Outlets
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profile.html">
+              <i class="bi bi-person me-1"></i>Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="settings.html">
+              <i class="bi bi-gear me-1"></i>Settings
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">{{PAGE_TITLE}}</h1>
+        <p class="page-subtitle">{{PAGE_SUBTITLE}}</p>
+      </div>
+
+      <!-- Content Area - Replace this section in your pages -->
+      <div class="content-area">
+        {{CONTENT}}
+      </div>
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Navigation -->
+  <div class="bottom-nav d-md-none">
+    <a href="dashboard.html" class="bottom-nav-item">
+      <i class="bi bi-house-door"></i>
+      <span>Home</span>
+    </a>
+    <a href="room-details.html" class="bottom-nav-item">
+      <i class="bi bi-building"></i>
+      <span>Rooms</span>
+    </a>
+    <a href="outlets.html" class="bottom-nav-item">
+      <i class="bi bi-lightning-charge"></i>
+      <span>Outlets</span>
+    </a>
+    <a href="profile.html" class="bottom-nav-item">
+      <i class="bi bi-person"></i>
+      <span>Profile</span>
+    </a>
+    <a href="settings.html" class="bottom-nav-item">
+      <i class="bi bi-gear"></i>
+      <span>Settings</span>
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <h5><i class="bi bi-geo-alt-fill me-2"></i>CampusSpace</h5>
+          <p>Find classrooms and outlets across NJIT campus in real-time.</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="help.html">Help & FAQ</a></li>
+            <li><a href="data-info.html">Data Sources</a></li>
+            <li><a href="test-api.html">API Test</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Contact</h5>
+          <p>
+            <i class="bi bi-envelope me-2"></i>support@campusspace.edu<br>
+            <i class="bi bi-phone me-2"></i>(973) 555-CAMP
+          </p>
+        </div>
+      </div>
+      <hr style="border-color: rgba(255,255,255,0.2);">
+      <div class="text-center">
+        <p class="mb-0">© 2025 CampusSpace. Built for students, by students.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- API Client -->
+  <script src="api-client.js"></script>
+  
+  <script>
+    // Highlight active nav link
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+      document.querySelectorAll('.nav-link, .bottom-nav-item').forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Check if user is logged in
+    const njitId = localStorage.getItem("njitId") || sessionStorage.getItem("njitId");
+    if (!njitId && !window.location.pathname.includes('index.html')) {
+      window.location.href = "index.html";
+    }
+  </script>
+
+  <!-- Custom Page Scripts -->
+  {{CUSTOM_SCRIPTS}}
+
+</body>
+</html>

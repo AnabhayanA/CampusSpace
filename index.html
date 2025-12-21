@@ -3,104 +3,414 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CampusSpace | Login</title>
+  <title>CampusSpace | Smart Campus Navigation</title>
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="style.css" />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    .login-container {
-      max-width: 400px;
-      background: white;
-      padding: 25px;
-      margin: 100px auto;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .login-title {
-      font-size: 1.8rem;
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-wrapper {
+      width: 100%;
+      max-width: 450px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .login-header {
+      background: linear-gradient(135deg, #b31b1b 0%, #ff2c2c 100%);
+      padding: 40px 30px;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .login-header i {
+      font-size: 3.5rem;
       margin-bottom: 15px;
+      display: block;
+    }
+
+    .login-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-header p {
+      font-size: 0.95rem;
+      opacity: 0.95;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-body {
+      padding: 40px 30px;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .input-group {
+      margin-bottom: 25px;
+    }
+
+    .input-group-text {
+      background: linear-gradient(135deg, #b31b1b 0%, #ff2c2c 100%);
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+    }
+
+    .form-control {
+      border: 2px solid #e0e0e0;
+      padding: 12px 15px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .form-control:focus {
+      border-color: #b31b1b;
+      box-shadow: 0 0 0 0.2rem rgba(179, 27, 27, 0.15);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #b31b1b 0%, #ff2c2c 100%);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(179, 27, 27, 0.3);
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(179, 27, 27, 0.4);
+      background: linear-gradient(135deg, #ff2c2c 0%, #b31b1b 100%);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .features {
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    .feature-item i {
+      font-size: 1.5rem;
+      margin-right: 12px;
       color: #b31b1b;
     }
 
-    input {
-      width: 90%;
-      padding: 12px;
-      margin: 12px 0;
-      border-radius: 8px;
-      border: 1px solid #bbb;
-      font-size: 1rem;
-      outline: none;
-      transition: 0.3s;
-    }
-
-    input:focus {
-      border-color: #b31b1b;
-      box-shadow: 0 0 3px rgba(179, 27, 27, 0.6);
-    }
-
-    .login-btn {
-      width: 100%;
-      background-color: #b31b1b;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .login-btn:hover {
-      background-color: #ff2c2c;
-      transform: scale(1.03);
-    }
-
-    .error {
-      color: red;
+    .help-link {
+      text-align: center;
+      margin-top: 20px;
+      color: #777;
       font-size: 0.9rem;
-      margin-top: 8px;
+    }
+
+    .help-link a {
+      color: #b31b1b;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .help-link a:hover {
+      color: #ff2c2c;
+      text-decoration: underline;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 576px) {
+      .login-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .login-header i {
+        font-size: 2.5rem;
+      }
+
+      .login-body {
+        padding: 30px 20px;
+      }
+
+      .btn-login {
+        padding: 12px;
+        font-size: 1rem;
+      }
+    }
+
+    /* Loading Animation */
+    .loading {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .loading .btn-login::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin-left: 10px;
+      border: 2px solid white;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>CampusSpace</h1>
-  </header>
+  <div class="login-wrapper">
+    <div class="login-card">
+      <!-- Header -->
+      <div class="login-header">
+        <i class="bi bi-geo-alt-fill"></i>
+        <h1>CampusSpace</h1>
+        <p>Find Classrooms & Outlets in Real-Time</p>
+      </div>
 
-  <div class="login-container">
-    <h2 class="login-title">Login</h2>
-    <p>Enter your NJIT ID to continue</p>
+      <!-- Body -->
+      <div class="login-body">
+        <form id="loginForm">
+          <!-- NJIT ID Input -->
+          <div class="mb-4">
+            <label for="njitId" class="form-label">
+              <i class="bi bi-person-badge"></i> NJIT ID
+            </label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bi bi-person-circle"></i>
+              </span>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="njitId" 
+                placeholder="Enter your NJIT ID"
+                required
+                autocomplete="username"
+              />
+            </div>
+          </div>
 
-    <input type="text" id="njitId" placeholder="Enter NJIT ID (e.g. aa123)" />
-    <button class="login-btn" onclick="login()">Continue</button>
+          <!-- Password Input -->
+          <div class="mb-4">
+            <label for="password" class="form-label">
+              <i class="bi bi-lock-fill"></i> Password
+            </label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bi bi-shield-lock"></i>
+              </span>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                placeholder="Enter your password"
+                required
+                autocomplete="current-password"
+              />
+            </div>
+          </div>
 
-    <p id="loginError" class="error"></p>
+          <!-- Remember Me -->
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="rememberMe">
+            <label class="form-check-label" for="rememberMe">
+              Remember me
+            </label>
+          </div>
+
+          <!-- Login Button -->
+          <button type="submit" class="btn btn-login">
+            <i class="bi bi-box-arrow-in-right me-2"></i>
+            Login to Dashboard
+          </button>
+        </form>
+
+        <!-- Features -->
+        <div class="features">
+          <div class="feature-item">
+            <i class="bi bi-building"></i>
+            <span>Find available classrooms instantly</span>
+          </div>
+          <div class="feature-item">
+            <i class="bi bi-lightning-charge"></i>
+            <span>Locate working outlets across campus</span>
+          </div>
+          <div class="feature-item">
+            <i class="bi bi-map"></i>
+            <span>Interactive campus navigation</span>
+          </div>
+          <div class="feature-item">
+            <i class="bi bi-clock-history"></i>
+            <span>Real-time room availability</span>
+          </div>
+        </div>
+
+        <!-- Help Link -->
+        <div class="help-link">
+          Need help? <a href="#" data-bs-toggle="modal" data-bs-target="#helpModal">Contact Support</a>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <footer>
-    <p>© 2025 CampusSpace | Helping NJIT Students Find Space</p>
-  </footer>
+  <!-- Help Modal -->
+  <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" style="background: linear-gradient(135deg, #b31b1b 0%, #ff2c2c 100%); color: white;">
+          <h5 class="modal-title" id="helpModalLabel">
+            <i class="bi bi-question-circle me-2"></i>Need Help?
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h6><i class="bi bi-info-circle text-primary me-2"></i>Getting Started</h6>
+          <p>For demo purposes, you can use any NJIT ID to login.</p>
+          
+          <h6 class="mt-3"><i class="bi bi-envelope text-danger me-2"></i>Contact Support</h6>
+          <p>Email: <a href="mailto:support@campusspace.edu">support@campusspace.edu</a></p>
+          
+          <h6 class="mt-3"><i class="bi bi-tools text-warning me-2"></i>Technical Issues</h6>
+          <p>If you experience any technical difficulties, please clear your browser cache or try a different browser.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    function login() {
-      const id = document.getElementById("njitId").value.trim();
-      const error = document.getElementById("loginError");
-
-      if (id.length < 3) {
-        error.textContent = "Please enter a valid NJIT ID.";
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const njitId = document.getElementById("njitId").value.trim();
+      const password = document.getElementById("password").value;
+      const rememberMe = document.getElementById("rememberMe").checked;
+      
+      if (!njitId) {
+        alert("Please enter your NJIT ID");
         return;
       }
 
-      // Save login
-      localStorage.setItem("njitId", id);
+      // Add loading state
+      const form = document.getElementById("loginForm");
+      form.classList.add("loading");
+      
+      // Simulate authentication delay
+      setTimeout(() => {
+        // Store user data
+        if (rememberMe) {
+          localStorage.setItem("njitId", njitId);
+          localStorage.setItem("rememberMe", "true");
+        } else {
+          sessionStorage.setItem("njitId", njitId);
+        }
+        
+        // Redirect to dashboard
+        window.location.href = "dashboard.html";
+      }, 800);
+    });
 
-      // Redirect to dashboard
-      window.location.href = "dashboard.html";
-    }
+    // Check if user wants to be remembered
+    window.addEventListener("load", () => {
+      const rememberedId = localStorage.getItem("njitId");
+      const rememberMe = localStorage.getItem("rememberMe");
+      
+      if (rememberMe === "true" && rememberedId) {
+        document.getElementById("njitId").value = rememberedId;
+        document.getElementById("rememberMe").checked = true;
+      }
+    });
   </script>
 </body>
 </html>

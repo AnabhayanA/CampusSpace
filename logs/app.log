@@ -1,0 +1,172 @@
+[2025-12-21 10:15:30.123] [INFO] [Server] - CampusSpace server started on port 3000 | {"environment":"development","nodeVersion":"v18.17.0","platform":"linux"}
+[2025-12-21 10:15:30.456] [INFO] [DataRefresh] - Fetching course schedule from NJIT...
+[2025-12-21 10:15:32.789] [WARN] [DataRefresh] - No courses found from NJIT site - check HTML structure
+[2025-12-21 10:15:32.890] [INFO] [DataRefresh] - Loading sample data as fallback... | {"reason":"NJIT fetch failed"}
+[2025-12-21 10:15:32.995] [INFO] [DataRefresh] - Loaded 27 sample courses | {"source":"sample","buildings":8}
+[2025-12-21 10:15:33.100] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentTime":"2025-12-21T10:15:33.100Z"}
+[2025-12-21 10:15:33.250] [INFO] [RoomAvailability] - Room availability calculated | {"available":15,"occupied":12,"total":27}
+[2025-12-21 10:16:45.123] [INFO] [API] - GET /api/health - 200 - 5ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:16:52.456] [INFO] [API] - GET /api/rooms/availability - 200 - 125ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:17:15.789] [INFO] [API] - GET /api/courses - 200 - 8ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:17:30.012] [INFO] [API] - GET /api/buildings - 200 - 15ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:18:22.345] [INFO] [API] - GET /api/rooms/KUPF%20207 - 200 - 12ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:20:00.678] [ERROR] [API] - GET /api/invalid-endpoint - 404 - 2ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:22:15.901] [INFO] [API] - POST /api/refresh - 200 - 2345ms | {"ip":"127.0.0.1"}
+[2025-12-21 10:22:15.905] [INFO] [DataRefresh] - Manual data refresh triggered
+[2025-12-21 10:22:18.234] [WARN] [DataRefresh] - NJIT site timeout | {"error":"ETIMEDOUT"}
+[2025-12-21 10:22:18.345] [INFO] [DataRefresh] - Using cached sample data | {"courses":27}
+[2025-12-21 11:00:00.000] [INFO] [DataRefresh] - Scheduled refresh started
+[2025-12-21 11:00:02.123] [INFO] [DataRefresh] - Data refresh completed | {"courses":27,"source":"sample"}
+[2025-12-21 11:00:02.234] [INFO] [RoomAvailability] - Recalculating availability for new hour | {"hour":11}
+[2025-12-21 11:00:02.345] [INFO] [RoomAvailability] - Availability updated | {"available":18,"occupied":9}
+[2025-12-21 11:15:45.567] [INFO] [API] - GET /dashboard.html - 200 - 15ms | {"ip":"192.168.1.105"}
+[2025-12-21 11:15:46.123] [INFO] [API] - GET /api/rooms/availability - 200 - 98ms | {"ip":"192.168.1.105"}
+[2025-12-21 11:16:23.456] [INFO] [API] - GET /api/buildings - 200 - 8ms | {"ip":"192.168.1.105"}
+[2025-12-21 11:20:12.789] [ERROR] [Express] - Cannot read property 'room' of undefined | {"stack":"TypeError: Cannot read property...","path":"/api/rooms/undefined","method":"GET"}
+[2025-12-21 11:25:30.012] [INFO] [API] - GET /profile.html - 200 - 12ms | {"ip":"192.168.1.105"}
+[2025-12-21 11:30:45.234] [INFO] [API] - GET /settings.html - 200 - 10ms | {"ip":"192.168.1.105"}
+[2025-12-21 12:00:00.000] [INFO] [DataRefresh] - Scheduled refresh started
+[2025-12-21 12:00:02.567] [INFO] [DataRefresh] - Data refresh completed | {"courses":27,"source":"sample"}
+[2025-12-21 12:00:02.678] [INFO] [RoomAvailability] - Availability updated | {"available":10,"occupied":17}
+[2025-12-21 12:15:30.890] [WARN] [API] - Slow request detected | {"path":"/api/rooms/availability","responseTime":1250}
+[2025-12-21 13:00:00.123] [INFO] [DataRefresh] - Scheduled refresh started
+[2025-12-21 13:00:01.234] [INFO] [DataRefresh] - Data refresh completed | {"courses":27,"source":"sample"}
+[2025-12-21 14:30:45.567] [INFO] [RoomAvailability] - Peak usage detected | {"activeUsers":45,"requests":234}
+[2025-12-21 15:00:00.000] [INFO] [DataRefresh] - Scheduled refresh started
+[2025-12-21 15:00:02.123] [INFO] [DataRefresh] - Data refresh completed | {"courses":27,"source":"sample"}
+[2025-12-21 16:45:30.456] [INFO] [API] - GET /test-api.html - 200 - 8ms | {"ip":"192.168.1.105"}
+[2025-12-21 17:00:00.000] [INFO] [DataRefresh] - Scheduled refresh started
+[2025-12-21 17:00:02.789] [INFO] [DataRefresh] - Data refresh completed | {"courses":27,"source":"sample"}
+[2025-12-21 18:00:00.123] [INFO] [Server] - Daily log rotation completed | {"oldLogs":["access.log.2025-12-20"],"compressed":true}
+[2025-12-21 14:34:53.929] [INFO] [DataRefresh] - Fetching course schedule from NJIT...
+[2025-12-21 14:34:54.159] [ERROR] [DataRefresh] - Failed to fetch NJIT data: No courses found from NJIT site - check HTML structure | {"error":"No courses found from NJIT site - check HTML structure","stack":"Error: No courses found from NJIT site - check HTML structure\n    at fetchCourseSchedule (/home/anabhayan/CampusSpace/server.js:137:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+[2025-12-21 14:36:43.932] [INFO] [DataRefresh] - Fetching course schedule from NJIT...
+[2025-12-21 14:36:44.180] [ERROR] [DataRefresh] - Failed to fetch NJIT data: No courses found from NJIT site - check HTML structure | {"error":"No courses found from NJIT site - check HTML structure","stack":"Error: No courses found from NJIT site - check HTML structure\n    at fetchCourseSchedule (/home/anabhayan/CampusSpace/server.js:137:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+[2025-12-21 14:36:44.180] [INFO] [DataRefresh] - Loading sample data as fallback | {"reason":"NJIT fetch failed"}
+[2025-12-21 14:36:44.180] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T14:36:44.180Z"}
+[2025-12-21 14:36:44.181] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"1ms"}
+[2025-12-21 14:36:44.181] [INFO] [DataRefresh] - Loaded 27 sample courses | {"courses":27,"source":"sample","buildings":8}
+[2025-12-21 14:36:44.182] [INFO] [Server] - CampusSpace server started on port 3000 | {"environment":"development","nodeVersion":"v20.19.5","platform":"linux"}
+[2025-12-21 14:36:44.182] [INFO] [Server] - Loaded 27 courses
+[2025-12-21 14:36:44.182] [INFO] [Server] - Auto-refresh scheduled every hour
+[2025-12-21 14:36:45.220] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T14:36:45.220Z"}
+[2025-12-21 14:36:45.222] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"2ms"}
+[2025-12-21 14:36:45.227] [INFO] [API] - GET /api/rooms/availability - 200 - 7ms | {"ip":"::1"}
+[2025-12-21 14:36:56.127] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T14:36:56.127Z"}
+[2025-12-21 14:36:56.128] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"1ms"}
+[2025-12-21 14:36:56.131] [INFO] [API] - GET /api/rooms/availability - 200 - 4ms | {"ip":"::1"}
+[2025-12-21 14:37:26.285] [INFO] [API] - GET /.well-known/appspecific/com.chrome.devtools.json - 404 - 2ms | {"ip":"::1"}
+[2025-12-21 14:37:58.150] [INFO] [Server] - CampusSpace server shutting down | {"reason":"SIGINT received"}
+[2025-12-21 14:38:07.928] [INFO] [DataRefresh] - Fetching course schedule from NJIT...
+[2025-12-21 14:38:08.117] [ERROR] [DataRefresh] - Failed to fetch NJIT data: No courses found from NJIT site - check HTML structure | {"error":"No courses found from NJIT site - check HTML structure","stack":"Error: No courses found from NJIT site - check HTML structure\n    at fetchCourseSchedule (/home/anabhayan/CampusSpace/server.js:137:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+[2025-12-21 14:38:08.117] [INFO] [DataRefresh] - Loading sample data as fallback | {"reason":"NJIT fetch failed"}
+[2025-12-21 14:38:08.117] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T14:38:08.117Z"}
+[2025-12-21 14:38:08.118] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"1ms"}
+[2025-12-21 14:38:08.118] [INFO] [DataRefresh] - Loaded 27 sample courses | {"courses":27,"source":"sample","buildings":8}
+[2025-12-21 14:38:08.120] [INFO] [Server] - CampusSpace server started on port 3000 | {"environment":"development","nodeVersion":"v20.19.5","platform":"linux"}
+[2025-12-21 14:38:08.120] [INFO] [Server] - Loaded 27 courses
+[2025-12-21 14:38:08.120] [INFO] [Server] - Auto-refresh scheduled every hour
+[2025-12-21 14:38:19.680] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T14:38:19.680Z"}
+[2025-12-21 14:38:19.681] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"1ms"}
+[2025-12-21 14:38:19.685] [INFO] [API] - GET /api/rooms/availability - 200 - 5ms | {"ip":"::1"}
+[2025-12-21 14:39:44.241] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T14:39:44.240Z"}
+[2025-12-21 14:39:44.241] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"1ms"}
+[2025-12-21 14:39:44.243] [INFO] [API] - GET /api/rooms/availability - 200 - 2ms | {"ip":"::1"}
+[2025-12-21 14:43:46.401] [INFO] [Server] - CampusSpace server shutting down | {"reason":"SIGINT received"}
+[2025-12-21 14:46:55.944] [WARN] [[Database] - Mongoose disconnected from MongoDB] - undefined
+[2025-12-21 14:46:55.959] [INFO] [DataRefresh] - Fetching course schedule from NJIT...
+[2025-12-21 14:46:56.000] [ERROR] [[Database] - MongoDB connection failed] - [object Object]
+[2025-12-21 14:46:56.000] [WARN] [[Database] - Running in development mode without database] - [object Object]
+[2025-12-21 14:46:56.000] [ERROR] [[Database] - Mongoose connection error] - [object Object]
+[2025-12-21 14:46:56.221] [ERROR] [DataRefresh] - Failed to fetch NJIT data: No courses found from NJIT site - check HTML structure | {"error":"No courses found from NJIT site - check HTML structure","stack":"Error: No courses found from NJIT site - check HTML structure\n    at fetchCourseSchedule (/home/anabhayan/CampusSpace/server.js:141:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+[2025-12-21 14:46:56.221] [INFO] [DataRefresh] - Loading sample data as fallback | {"reason":"NJIT fetch failed"}
+[2025-12-21 14:46:56.222] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T14:46:56.222Z"}
+[2025-12-21 14:46:56.222] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"0ms"}
+[2025-12-21 14:46:56.222] [INFO] [DataRefresh] - Loaded 27 sample courses | {"courses":27,"source":"sample","buildings":8}
+[2025-12-21 14:46:56.223] [INFO] [Server] - CampusSpace server started on port 3000 | {"environment":"development","nodeVersion":"v20.19.5","platform":"linux"}
+[2025-12-21 14:46:56.223] [INFO] [Server] - Loaded 27 courses
+[2025-12-21 14:46:56.224] [INFO] [Server] - Auto-refresh scheduled every hour
+[2025-12-21 14:47:43.909] [INFO] [Server] - CampusSpace server shutting down | {"reason":"SIGINT received"}
+[2025-12-21 14:47:49.394] [WARN] [[Database] - Mongoose disconnected from MongoDB] - undefined
+[2025-12-21 14:47:49.411] [INFO] [DataRefresh] - Fetching course schedule from NJIT...
+[2025-12-21 14:47:49.452] [ERROR] [[Database] - MongoDB connection failed] - [object Object]
+[2025-12-21 14:47:49.452] [WARN] [[Database] - Running in development mode without database] - [object Object]
+[2025-12-21 14:47:49.452] [ERROR] [[Database] - Mongoose connection error] - [object Object]
+[2025-12-21 14:47:49.610] [ERROR] [DataRefresh] - Failed to fetch NJIT data: No courses found from NJIT site - check HTML structure | {"error":"No courses found from NJIT site - check HTML structure","stack":"Error: No courses found from NJIT site - check HTML structure\n    at fetchCourseSchedule (/home/anabhayan/CampusSpace/server.js:141:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+[2025-12-21 14:47:49.611] [INFO] [DataRefresh] - Loading sample data as fallback | {"reason":"NJIT fetch failed"}
+[2025-12-21 14:47:49.611] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T14:47:49.611Z"}
+[2025-12-21 14:47:49.613] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"2ms"}
+[2025-12-21 14:47:49.613] [INFO] [DataRefresh] - Loaded 27 sample courses | {"courses":27,"source":"sample","buildings":8}
+[2025-12-21 14:47:49.616] [INFO] [Server] - CampusSpace server started on port 3000 | {"environment":"development","nodeVersion":"v20.19.5","platform":"linux"}
+[2025-12-21 14:47:49.616] [INFO] [Server] - Loaded 27 courses
+[2025-12-21 14:47:49.616] [INFO] [Server] - Auto-refresh scheduled every hour
+[2025-12-21 14:48:01.466] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T14:48:01.466Z"}
+[2025-12-21 14:48:01.467] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"1ms"}
+[2025-12-21 14:48:01.470] [INFO] [API] - GET /api/rooms/availability - 200 - 4ms | {"ip":"::1"}
+[2025-12-21 14:48:09.274] [INFO] [API] - GET /api/health - 200 - 1ms | {"ip":"::1"}
+[2025-12-21 14:48:10.856] [INFO] [Server] - CampusSpace server shutting down | {"reason":"SIGTERM received"}
+[2025-12-21 14:48:13.307] [WARN] [[Database] - Mongoose disconnected from MongoDB] - undefined
+[2025-12-21 14:48:13.322] [INFO] [DataRefresh] - Fetching course schedule from NJIT...
+[2025-12-21 14:48:13.361] [ERROR] [[Database] - MongoDB connection failed] - [object Object]
+[2025-12-21 14:48:13.361] [WARN] [[Database] - Running in development mode without database] - [object Object]
+[2025-12-21 14:48:13.361] [ERROR] [[Database] - Mongoose connection error] - [object Object]
+[2025-12-21 14:48:13.486] [ERROR] [DataRefresh] - Failed to fetch NJIT data: No courses found from NJIT site - check HTML structure | {"error":"No courses found from NJIT site - check HTML structure","stack":"Error: No courses found from NJIT site - check HTML structure\n    at fetchCourseSchedule (/home/anabhayan/CampusSpace/server.js:141:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+[2025-12-21 14:48:13.486] [INFO] [DataRefresh] - Loading sample data as fallback | {"reason":"NJIT fetch failed"}
+[2025-12-21 14:48:13.486] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T14:48:13.486Z"}
+[2025-12-21 14:48:13.487] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"1ms"}
+[2025-12-21 14:48:13.487] [INFO] [DataRefresh] - Loaded 27 sample courses | {"courses":27,"source":"sample","buildings":8}
+[2025-12-21 14:48:13.488] [INFO] [Server] - CampusSpace server started on port 3000 | {"environment":"development","nodeVersion":"v20.19.5","platform":"linux"}
+[2025-12-21 14:48:13.488] [INFO] [Server] - Loaded 27 courses
+[2025-12-21 14:48:13.488] [INFO] [Server] - Auto-refresh scheduled every hour
+[2025-12-21 14:48:37.498] [ERROR] [[Outlets] - Error retrieving statistics] - [object Object]
+[2025-12-21 14:48:37.503] [INFO] [API] - GET /stats/summary - 500 - 10017ms | {"ip":"::1"}
+[2025-12-21 15:00:00.855] [INFO] [Scheduler] - Running scheduled course data refresh...
+[2025-12-21 15:00:00.856] [INFO] [DataRefresh] - Fetching course schedule from NJIT...
+[2025-12-21 15:00:01.081] [ERROR] [DataRefresh] - Failed to fetch NJIT data: No courses found from NJIT site - check HTML structure | {"error":"No courses found from NJIT site - check HTML structure","stack":"Error: No courses found from NJIT site - check HTML structure\n    at fetchCourseSchedule (/home/anabhayan/CampusSpace/server.js:141:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+[2025-12-21 15:00:01.082] [INFO] [DataRefresh] - Loading sample data as fallback | {"reason":"NJIT fetch failed"}
+[2025-12-21 15:00:01.082] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T15:00:01.082Z"}
+[2025-12-21 15:00:01.082] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"0ms"}
+[2025-12-21 15:00:01.082] [INFO] [DataRefresh] - Loaded 27 sample courses | {"courses":27,"source":"sample","buildings":8}
+[2025-12-21 15:05:44.678] [INFO] [Server] - CampusSpace server shutting down | {"reason":"SIGTERM received"}
+[2025-12-21 15:05:47.316] [WARN] [[Database] - Mongoose disconnected from MongoDB] - undefined
+[2025-12-21 15:05:47.317] [INFO] [[Server] - NJIT credentials detected, will use authenticated scraping] - undefined
+[2025-12-21 15:05:47.334] [INFO] [DataRefresh] - Attempting authenticated NJIT scraping...
+[2025-12-21 15:05:47.334] [ERROR] [[DataRefresh] - Authenticated scraping failed, trying basic method] - [object Object]
+[2025-12-21 15:05:47.334] [INFO] [DataRefresh] - Fetching course schedule from NJIT...
+[2025-12-21 15:05:47.377] [ERROR] [[Database] - MongoDB connection failed] - [object Object]
+[2025-12-21 15:05:47.378] [WARN] [[Database] - Running in development mode without database] - [object Object]
+[2025-12-21 15:05:47.378] [ERROR] [[Database] - Mongoose connection error] - [object Object]
+[2025-12-21 15:05:47.557] [ERROR] [DataRefresh] - Failed to fetch NJIT data: No courses found from NJIT site - check HTML structure | {"error":"No courses found from NJIT site - check HTML structure","stack":"Error: No courses found from NJIT site - check HTML structure\n    at fetchCourseSchedule (/home/anabhayan/CampusSpace/server.js:187:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+[2025-12-21 15:05:47.558] [INFO] [DataRefresh] - Loading sample data as fallback | {"reason":"NJIT fetch failed"}
+[2025-12-21 15:05:47.558] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T15:05:47.558Z"}
+[2025-12-21 15:05:47.559] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"1ms"}
+[2025-12-21 15:05:47.559] [INFO] [DataRefresh] - Loaded 27 sample courses | {"courses":27,"source":"sample","buildings":8}
+[2025-12-21 15:05:47.560] [INFO] [Server] - CampusSpace server started on port 3000 | {"environment":"development","nodeVersion":"v20.19.5","platform":"linux"}
+[2025-12-21 15:05:47.560] [INFO] [Server] - Loaded 27 courses
+[2025-12-21 15:05:47.560] [INFO] [Server] - Auto-refresh scheduled every hour
+[2025-12-21 15:05:59.869] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T15:05:59.869Z"}
+[2025-12-21 15:05:59.870] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"1ms"}
+[2025-12-21 15:05:59.874] [INFO] [API] - GET /api/rooms/availability - 200 - 5ms | {"ip":"::1"}
+[2025-12-21 15:06:06.212] [INFO] [Server] - CampusSpace server shutting down | {"reason":"SIGINT received"}
+[2025-12-21 15:07:18.022] [WARN] [[Database] - Mongoose disconnected from MongoDB] - undefined
+[2025-12-21 15:07:18.023] [INFO] [[Server] - NJIT credentials detected, will use authenticated scraping] - undefined
+[2025-12-21 15:07:18.037] [INFO] [DataRefresh] - Attempting authenticated NJIT scraping...
+[2025-12-21 15:07:18.130] [INFO] [[NJIT Scraper] - Starting authenticated scraping session] - undefined
+[2025-12-21 15:07:18.132] [ERROR] [[Database] - MongoDB connection failed] - [object Object]
+[2025-12-21 15:07:18.133] [WARN] [[Database] - Running in development mode without database] - [object Object]
+[2025-12-21 15:07:18.133] [ERROR] [[Database] - Mongoose connection error] - [object Object]
+[2025-12-21 15:07:18.148] [ERROR] [[NJIT Scraper] - Scraping failed] - [object Object]
+[2025-12-21 15:07:18.149] [ERROR] [[DataRefresh] - Authenticated scraping failed, trying basic method] - [object Object]
+[2025-12-21 15:07:18.149] [INFO] [DataRefresh] - Fetching course schedule from NJIT...
+[2025-12-21 15:07:18.339] [ERROR] [DataRefresh] - Failed to fetch NJIT data: No courses found from NJIT site - check HTML structure | {"error":"No courses found from NJIT site - check HTML structure","stack":"Error: No courses found from NJIT site - check HTML structure\n    at fetchCourseSchedule (/home/anabhayan/CampusSpace/server.js:187:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+[2025-12-21 15:07:18.339] [INFO] [DataRefresh] - Loading sample data as fallback | {"reason":"NJIT fetch failed"}
+[2025-12-21 15:07:18.340] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T15:07:18.340Z"}
+[2025-12-21 15:07:18.340] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"0ms"}
+[2025-12-21 15:07:18.341] [INFO] [DataRefresh] - Loaded 27 sample courses | {"courses":27,"source":"sample","buildings":8}
+[2025-12-21 15:07:18.343] [INFO] [Server] - CampusSpace server started on port 3000 | {"environment":"development","nodeVersion":"v20.19.5","platform":"linux"}
+[2025-12-21 15:07:18.343] [INFO] [Server] - Loaded 27 courses
+[2025-12-21 15:07:18.343] [INFO] [Server] - Auto-refresh scheduled every hour
+[2025-12-21 15:07:29.016] [INFO] [RoomAvailability] - Calculating room availability | {"totalRooms":27,"currentDay":"Su","currentTime":"2025-12-21T15:07:29.016Z"}
+[2025-12-21 15:07:29.017] [INFO] [RoomAvailability] - Room availability calculated | {"available":23,"occupied":0,"total":23,"calculationTime":"1ms"}
+[2025-12-21 15:07:29.023] [INFO] [API] - GET /api/rooms/availability - 200 - 7ms | {"ip":"::1"}
+[2025-12-21 15:07:36.891] [INFO] [Server] - CampusSpace server shutting down | {"reason":"SIGINT received"}

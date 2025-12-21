@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Source Info - CampusSpace</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 { color: #b31b1b; }
+    .info-box {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .real { background: #4caf50; color: white; }
+    .sample { background: #ff9800; color: white; }
+    .btn {
+      background: #b31b1b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .btn:hover { background: #8a1515; }
+    pre {
+      background: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔍 CampusSpace Data Source Information</h1>
+  
+  <div class="info-box">
+    <h2>Current Data Status <span id="data-status" class="status sample">Using Sample Data</span></h2>
+    <p><strong>Last Updated:</strong> <span id="last-updated">Loading...</span></p>
+    <p><strong>Total Courses:</strong> <span id="course-count">0</span></p>
+    <p><strong>Total Rooms:</strong> <span id="room-count">0</span></p>
+    <button class="btn" onclick="checkStatus()">🔄 Refresh Status</button>
+    <button class="btn" onclick="forceRefresh()">⚡ Force Data Refresh</button>
+  </div>
+
+  <div class="info-box">
+    <h2>📊 Data Source: NJIT Course Schedule</h2>
+    <p><strong>URL:</strong> <a href="https://generalssb-prod.ec.njit.edu/BannerExtensibility/customPage/page/stuRegCrseSched" target="_blank">
+      https://generalssb-prod.ec.njit.edu/BannerExtensibility/customPage/page/stuRegCrseSched
+    </a></p>
+    
+    <h3>Why Sample Data?</h3>
+    <p>The system tries to fetch real data from NJIT's course schedule page, but currently uses sample data because:</p>
+    <ul>
+      <li>🔒 The NJIT site may require authentication/login</li>
+      <li>🌐 The HTML structure might be different than expected</li>
+      <li>📅 It may be showing a specific semester that needs to be selected</li>
+      <li>🚫 CORS or access restrictions from the NJIT server</li>
+    </ul>
+  </div>
+
+  <div class="info-box">
+    <h2>✅ Current Sample Data</h2>
+    <p>The sample data includes:</p>
+    <ul>
+      <li><strong>27 classrooms</strong> across 8 buildings</li>
+      <li><strong>Buildings:</strong> KUPF, FMH, CAB, GITC, CKB, Tiernan, Cullimore, WEC</li>
+      <li><strong>Realistic schedules</strong> with MWF and TR patterns</li>
+      <li><strong>Real-time availability</strong> calculated based on current time</li>
+    </ul>
+  </div>
+
+  <div class="info-box">
+    <h2>🔧 How to Get Real Data</h2>
+    
+    <h3>Option 1: Manual Data Upload</h3>
+    <p>Export the NJIT course schedule and upload it to the system</p>
+    <button class="btn">📤 Upload Course Data (Coming Soon)</button>
+    
+    <h3>Option 2: API Integration</h3>
+    <p>If NJIT provides an official API, we can integrate with it:</p>
+    <pre>// Example API integration
+const courses = await fetch('https://njit-api.edu/courses');
+const data = await courses.json();</pre>
+    
+    <h3>Option 3: Authenticated Scraping</h3>
+    <p>Add NJIT login credentials to access the protected course schedule:</p>
+    <pre>// In server.js - add authentication
+const response = await axios.post('https://njit.edu/login', {
+  username: process.env.NJIT_USER,
+  password: process.env.NJIT_PASS
+});</pre>
+    
+    <h3>Option 4: Database Import</h3>
+    <p>Import course schedules directly from a CSV or JSON file:</p>
+    <button class="btn" onclick="showImportInstructions()">📥 Show Import Instructions</button>
+  </div>
+
+  <div id="import-instructions" class="info-box" style="display: none;">
+    <h2>📥 CSV Import Format</h2>
+    <p>Create a CSV file with the following columns:</p>
+    <pre>Section,CRN,Days,Times,Location,Status,MaxStudents,Enrolled,Instructor,DeliveryMode
+002,10001,TR,1:00 PM - 2:20 PM,KUPF 207,Closed,43,43,Li Nichole,Face-to-Face
+004,10002,TF,10:00 AM - 11:20 AM,KUPF 103,Open,43,34,Ma Yue,Face-to-Face</pre>
+    
+    <p><strong>Days Format:</strong> M (Monday), T (Tuesday), W (Wednesday), R (Thursday), F (Friday)</p>
+    <p><strong>Times Format:</strong> H:MM AM/PM - H:MM AM/PM</p>
+    
+    <button class="btn">📤 Upload CSV</button>
+  </div>
+
+  <div class="info-box">
+    <h2>🎯 What You Get</h2>
+    <p>Even with sample data, the system provides:</p>
+    <ul>
+      <li>✅ Real-time room availability calculation</li>
+      <li>✅ Floor-by-floor room organization</li>
+      <li>✅ Interactive campus map</li>
+      <li>✅ Filter by building, availability, and time</li>
+      <li>✅ Next class times for available rooms</li>
+      <li>✅ End times for occupied rooms</li>
+      <li>✅ Auto-refresh every hour</li>
+    </ul>
+  </div>
+
+  <div class="info-box">
+    <h2>🔍 Test the Scraper</h2>
+    <p>See what the scraper is finding:</p>
+    <button class="btn" onclick="testScraper()">🧪 Test NJIT Scraper</button>
+    <pre id="scraper-result">Click button to test...</pre>
+  </div>
+
+  <script src="api-client.js"></script>
+  <script>
+    async function checkStatus() {
+      try {
+        const health = await CampusSpaceAPI.healthCheck();
+        const courses = await CampusSpaceAPI.getCourses();
+        const rooms = await CampusSpaceAPI.getRoomAvailability();
+        
+        document.getElementById('last-updated').textContent = new Date(courses.lastUpdated).toLocaleString();
+        document.getElementById('course-count').textContent = courses.count;
+        document.getElementById('room-count').textContent = rooms.summary.total;
+        
+        const statusBadge = document.getElementById('data-status');
+        if (courses.courses && courses.courses.length > 0) {
+          statusBadge.textContent = '✅ Using Sample Data';
+          statusBadge.className = 'status sample';
+        }
+      } catch (error) {
+        console.error('Error checking status:', error);
+      }
+    }
+    
+    async function forceRefresh() {
+      document.getElementById('scraper-result').textContent = 'Refreshing data from NJIT...';
+      try {
+        const result = await CampusSpaceAPI.refreshData();
+        document.getElementById('scraper-result').textContent = JSON.stringify(result, null, 2);
+        checkStatus();
+      } catch (error) {
+        document.getElementById('scraper-result').textContent = 'Error: ' + error.message;
+      }
+    }
+    
+    function showImportInstructions() {
+      document.getElementById('import-instructions').style.display = 'block';
+    }
+    
+    async function testScraper() {
+      const result = document.getElementById('scraper-result');
+      result.textContent = 'Testing scraper...';
+      
+      try {
+        const response = await fetch('https://generalssb-prod.ec.njit.edu/BannerExtensibility/customPage/page/stuRegCrseSched', {
+          mode: 'no-cors'
+        });
+        result.textContent = 'The NJIT site is accessible, but requires proper parsing.\n\nIssues:\n- May need authentication\n- HTML structure needs analysis\n- Might be showing wrong semester';
+      } catch (error) {
+        result.textContent = 'Error accessing NJIT site:\n' + error.message + '\n\nThis is expected due to CORS restrictions.';
+      }
+    }
+    
+    // Auto-load status
+    checkStatus();
+  </script>
+</body>
+</html>
