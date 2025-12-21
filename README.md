@@ -482,20 +482,7 @@ This project is licensed under the MIT License.
 - **MongoDB Team** for the robust database system
 - **Open Source Community** for various dependencies
 
-## 📞 Support & Contact
-
-### Get Help
-- 📧 Email: campusspace@njit.edu
-- 🐛 [Report Bug](https://github.com/yourusername/CampusSpace/issues)
-- 💡 [Request Feature](https://github.com/yourusername/CampusSpace/issues)
-- 📖 [Read Docs](https://github.com/yourusername/CampusSpace/wiki)
-
-### Community
-- 💬 Discord: (Add link)
-- 🐦 Twitter: @campusspace
-- 📱 Instagram: @campusspace_njit
-
-## 📸 Screenshots
+##  Screenshots
 
 ### Landing Page
 Modern hero section with gradient background and feature cards.
